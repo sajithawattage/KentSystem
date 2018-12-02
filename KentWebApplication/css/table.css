@@ -1,0 +1,19 @@
+﻿.Grid {background-color: #fff; margin: 5px 0 10px 0; border: solid 1px #525252; border-collapse:collapse; color: #474747;}
+.Grid td {
+       padding: 3px;
+       padding-left: 10px;
+      border: solid 1px #c1c1c1; }
+.Grid th  {
+      padding : 8px 10px;
+      color: #fff;
+      background: #363670;
+      /*background: #363670 url(../img/grid/grid-header.png) repeat-x top;*/
+      border-left: solid 1px #525252;
+      font-size: 1.0em; }
+.Grid .alt {
+      background: #fcfcfc url(../img/grid/grid-alt.png) repeat-x top; }
+.Grid .pgr {background: #363670 url(../img/grid/grid-pgr.png) repeat-x top; }
+.Grid .pgr table { margin: 3px 0; }
+.Grid .pgr td { border-width: 0; padding: 0 6px; border-left: solid 1px #666; font-weight: bold; color: #fff; line-height: 12px; }  
+.Grid .pgr a { color: Gray; text-decoration: none; }
+.Grid .pgr a:hover { color: #000; text-decoration: none; }
