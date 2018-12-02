@@ -13,6 +13,8 @@ using KentWebApplication.Classes;
 using System.Globalization;
 using System.Text;
 
+
+
 namespace KentWebApplication
 {
     public partial class EstimateQuotation : ParentPage
