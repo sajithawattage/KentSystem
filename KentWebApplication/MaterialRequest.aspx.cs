@@ -467,22 +467,40 @@ namespace KentWebApplication
 					{
 						Session[SESSION_FORM_MODE]			= Mode.Saved;
 
-						//send email
-						Email		email					= new Email(){
-                            HostAddress = Config.SmtpHostName,
-                            FromAddress = Config.SmtpUserName,
-                            SmtpPassword = Config.SmtpPassword,
-                            ToAddress = Session[SESSION_MANAGER_EMAIL_ADDRESS].ToString(),
-                            Subject = "New  MR Received ",
-							Body = GenerateEmailBody(
-									Session[SESSION_PROJECT_NAME].ToString(),
-									Session[SESSION_JOB_NAME].ToString(),
-									Session[SESSION_ENGINEER_NAME].ToString(),
-									materialRequest.ReceivedDate,
-									materialRequest.MrNumber.ToString())
+                        Email email = null;
 
-						};
+                        //get HD Code
+                        DataTable dtJobDetails = materialRequestDao.GetCustomerJobDetails(materialRequest.CustomerCode,
+                                                                    materialRequest.JobCode);
+                        if (dtJobDetails != null && dtJobDetails.Rows.Count > 0)
+                        {
+                            if (Convert.ToInt16(dtJobDetails.Rows[0]["HDCode"].ToString()) == 0)
+                            {
+                                //send email
+                                email = new Email()
+                                {
+                                    HostAddress = Config.SmtpHostName,
+                                    FromAddress = Config.SmtpUserName,
+                                    SmtpPassword = Config.SmtpPassword,
+                                    ToAddress = Session[SESSION_MANAGER_EMAIL_ADDRESS].ToString(),
+                                    Subject = "New  MR Received ",
+                                    Body = GenerateEmailBody(
+                                            Session[SESSION_PROJECT_NAME].ToString(),
+                                            Session[SESSION_JOB_NAME].ToString(),
+                                            Session[SESSION_ENGINEER_NAME].ToString(),
+                                            materialRequest.ReceivedDate,
+                                            materialRequest.MrNumber.ToString())
 
+                                };
+                            }
+                            else
+                            {
+                                email = SendOtherEmail(materialRequest.ReceivedDate, 
+                                                 materialRequest.MrNumber.ToString(),
+                                                 dtJobDetails.Rows[0]["Email"].ToString());
+                            }
+                        }
+                        
                         if (engineerStatus == FINISH_ENGINEER)
                         {
                             if (email.SendMail())
@@ -515,6 +533,25 @@ namespace KentWebApplication
 		    return isSaved;
 
 		}
+
+
+        public Email SendOtherEmail(DateTime reciveDate, string requestNo, string toAddress)
+        {
+            Email email = new Email()
+            {
+                HostAddress = Config.SmtpHostName,
+                FromAddress = Config.SmtpUserName,
+                SmtpPassword = Config.SmtpPassword,
+                ToAddress = toAddress,
+                Subject = "New MR Received For Recommendation",
+                Body = GenerateEmailBody(Session[SESSION_PROJECT_NAME].ToString(),
+                                    Session[SESSION_JOB_NAME].ToString(),
+                                    Session[SESSION_ENGINEER_NAME].ToString(), reciveDate, requestNo)
+
+            };
+
+            return email;
+        }
 
         /// <summary>
         /// 

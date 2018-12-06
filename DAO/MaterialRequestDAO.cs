@@ -484,6 +484,28 @@ namespace DAO
             }
 		}
 
+        public DataTable GetCustomerJobDetails(int CustomerCode, int JobCode)
+        {
+            DataTable dtJobDetails = null;
+            SqlParameter[] param = null;
+            string qJobDetails = "sp_web_GetCustomerJobDetails";
+
+            try
+            {
+                param = new SqlParameter[2];
+
+                param[0] = new SqlParameter("@CustomerCode", CustomerCode);
+                param[1] = new SqlParameter("@JobCode", JobCode);
+
+                dtJobDetails = myConn.ExecuteProcedure(qJobDetails, param);
+                return dtJobDetails;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
     }
 }
