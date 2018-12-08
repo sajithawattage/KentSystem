@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KentWebApplication", "KentWebApplication\KentWebApplication.csproj", "{D54838DD-2211-4424-BB7C-D013D2A17EB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KentAPI", "KentAPI\KentAPI.csproj", "{02CAAD3B-DA74-4982-AC9B-9875C942B1B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D54838DD-2211-4424-BB7C-D013D2A17EB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D54838DD-2211-4424-BB7C-D013D2A17EB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D54838DD-2211-4424-BB7C-D013D2A17EB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02CAAD3B-DA74-4982-AC9B-9875C942B1B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CAAD3B-DA74-4982-AC9B-9875C942B1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CAAD3B-DA74-4982-AC9B-9875C942B1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CAAD3B-DA74-4982-AC9B-9875C942B1B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
