@@ -156,7 +156,7 @@ namespace KentWebApplication
 
         private DateTime RequiredDateSetter()
         {
-            return GetSriLankanTime().AddDays(14);
+            return GetSriLankanTime().AddDays(22);
         }
 
 		/// <summary>
