@@ -276,7 +276,7 @@
                         placeholder="Qty" OnTextChanged="txtQty_TextChanged1"></asp:TextBox>
                 </div>
                 <div class="form-group col-sm-2">
-                    <asp:TextBox ID="txtRemarks" runat="server" class="form-control"
+                    <asp:TextBox ID="txtRemarks" runat="server" class="form-control" ReadOnly="true" 
                         placeholder="Remarks"></asp:TextBox>
                 </div>
                 <div class="col-sm-1">
@@ -316,7 +316,7 @@
                                 ItemStyle-HorizontalAlign="Center"
                                 HeaderStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Remarks" HeaderText="Remarks"
-                                ItemStyle-Width="15%" />
+                                ItemStyle-Width="15%" ReadOnly="true" />
                             <asp:TemplateField>
                                 <ItemStyle Width="5%" HorizontalAlign="Center" />
                                 <ItemTemplate>
@@ -446,7 +446,7 @@
         $("#<%=txtQty.ClientID %>").keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode == 13) {
-                $("#<%=txtRemarks.ClientID %>").focus();
+                $("#<%=btnAdd.ClientID %>").focus();
                 return false;
             }
         });
@@ -454,7 +454,6 @@
         $("#<%=txtRemarks.ClientID %>").keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode == 13) {
-                $("#<%=btnAdd.ClientID %>").focus();
                 return false;
             }
         });

@@ -166,7 +166,7 @@
                         onkeyup="Total();" OnTextChanged="txtQty_TextChanged1"></asp:TextBox>
                 </div>
                 <div class="form-group col-sm-2">
-                    <asp:TextBox id="txtRemarks" runat="server" class="form-control" 
+                    <asp:TextBox id="txtRemarks" runat="server" class="form-control"  ReadOnly="true"
                         placeholder="Remarks"></asp:TextBox>
                 </div>
                 <div class="col-xs-1">
@@ -209,7 +209,7 @@
                             <asp:BoundField datafield="Total" headertext="Total"
                                 itemstyle-Width="1%" visible="false" />
                              <asp:BoundField datafield="Remarks" headertext="Remarks"
-                                itemstyle-Width="15%" />
+                                itemstyle-Width="15%" ReadOnly="true" />
                             <asp:TemplateField>
                                 <itemstyle width="5%" horizontalalign="Center" /> 
                                 <itemtemplate>
@@ -322,7 +322,7 @@
             $('#<%=txtQty.ClientID%>').keypress(function (event) {
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if (keycode == 13) {
-                    $("#<%=txtRemarks.ClientID %>").focus();
+                    $("#<%=btnAdd.ClientID %>").focus();
                     return false;
                 }
             });
@@ -330,7 +330,6 @@
             $('#<%=txtRemarks.ClientID%>').keypress(function (event) {
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if (keycode == 13) {
-                    $("#<%=btnAdd.ClientID %>").focus();
                     return false;
                 }
             });
