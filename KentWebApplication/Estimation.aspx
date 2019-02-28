@@ -330,7 +330,6 @@
             $('#<%=txtRemarks.ClientID%>').keypress(function (event) {
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if (keycode == 13) {
-                    $("#<%=btnAdd.ClientID %>").focus();
                     return false;
                 }
             });
