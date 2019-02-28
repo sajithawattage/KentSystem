@@ -509,7 +509,7 @@ namespace KentWebApplication
                             }
                             else
                             {
-                                this.SetMessage(1, "Material Request Successfully saved.But email sending failed.");
+                                this.SetMessage(1, "Material Request Successfully Saved.But email sending failed.");
                             }
 
                         }
@@ -754,7 +754,8 @@ namespace KentWebApplication
             DateTime    currentDate     = this.GetSriLankanTime();
             DateTime    requiredDate    = Convert.ToDateTime(dtApplyDate.Text);
 
-            var result = (requiredDate.Date - currentDate.Date).TotalDays > 7;
+            //TODO : Read from configuration
+            var result = (requiredDate.Date - currentDate.Date).TotalDays > 21;
 
             return result;
         }
