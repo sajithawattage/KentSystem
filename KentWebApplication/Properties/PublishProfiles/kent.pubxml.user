@@ -8,20 +8,29 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>D:\Projects\Other Projects\Kent\Kent\Deploy</_PublishTargetUrl>
+    <_PublishTargetUrl>E:\Projects\Other Projects\Kent\Kent\Deploy</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ajax/dashboard-boxrefresh-demo.php">
       <publishTime>02/15/2015 14:50:24</publishTime>
     </File>
     <File Include="bin/DAO.dll">
-      <publishTime>08/29/2017 09:42:47</publishTime>
+      <publishTime>12/09/2018 00:45:43</publishTime>
+    </File>
+    <File Include="bin/DAO.pdb">
+      <publishTime>12/09/2018 00:45:43</publishTime>
     </File>
     <File Include="bin/Entities.dll">
-      <publishTime>08/29/2017 09:42:47</publishTime>
+      <publishTime>12/09/2018 00:45:41</publishTime>
+    </File>
+    <File Include="bin/Entities.pdb">
+      <publishTime>12/09/2018 00:45:41</publishTime>
     </File>
     <File Include="bin/KentWebApplication.dll">
-      <publishTime>08/29/2017 09:42:48</publishTime>
+      <publishTime>12/12/2018 01:09:06</publishTime>
+    </File>
+    <File Include="bin/KentWebApplication.pdb">
+      <publishTime>12/12/2018 01:09:06</publishTime>
     </File>
     <File Include="bin/Microsoft.ReportViewer.Common.dll">
       <publishTime>02/20/2011 04:40:08</publishTime>
@@ -189,13 +198,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/01/2015 19:39:52</publishTime>
     </File>
     <File Include="EstimateQuotation.aspx">
-      <publishTime>04/03/2017 15:24:02</publishTime>
+      <publishTime>10/11/2017 00:10:21</publishTime>
     </File>
     <File Include="EstimateQuotationList.aspx">
-      <publishTime>01/23/2017 12:47:41</publishTime>
+      <publishTime>01/23/2017 12:47:42</publishTime>
     </File>
     <File Include="Estimation.aspx">
-      <publishTime>08/29/2017 09:33:02</publishTime>
+      <publishTime>08/29/2017 09:33:04</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.eot">
       <publishTime>05/11/2015 16:06:24</publishTime>
@@ -261,7 +270,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/29/2015 01:51:34</publishTime>
     </File>
     <File Include="Home.aspx">
-      <publishTime>07/16/2017 10:21:32</publishTime>
+      <publishTime>07/16/2017 10:21:34</publishTime>
     </File>
     <File Include="img/ajax-loader.gif">
       <publishTime>05/11/2015 16:06:24</publishTime>
@@ -504,10 +513,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/11/2015 16:06:24</publishTime>
     </File>
     <File Include="Login.aspx">
-      <publishTime>04/10/2017 10:21:12</publishTime>
+      <publishTime>04/10/2017 10:21:14</publishTime>
     </File>
     <File Include="MaterialRequest.aspx">
-      <publishTime>04/03/2017 15:25:23</publishTime>
+      <publishTime>10/10/2017 23:33:36</publishTime>
     </File>
     <File Include="MaterialRequestList.aspx">
       <publishTime>12/13/2016 21:38:34</publishTime>
@@ -2046,7 +2055,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/25/2016 12:35:52</publishTime>
     </File>
     <File Include="SampleForm.aspx">
-      <publishTime>02/11/2017 17:57:44</publishTime>
+      <publishTime>02/11/2017 17:57:46</publishTime>
     </File>
     <File Include="SamplePage.aspx">
       <publishTime>01/10/2017 13:13:44</publishTime>
@@ -2190,7 +2199,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/17/2015 10:41:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/29/2017 09:42:54</publishTime>
+      <publishTime>12/12/2018 01:09:10</publishTime>
     </File>
     <File Include="WebMethods/AjaxHandler.asmx">
       <publishTime>02/15/2015 14:50:24</publishTime>

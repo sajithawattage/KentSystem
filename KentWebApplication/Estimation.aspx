@@ -209,7 +209,7 @@
                             <asp:BoundField datafield="Total" headertext="Total"
                                 itemstyle-Width="1%" visible="false" />
                              <asp:BoundField datafield="Remarks" headertext="Remarks"
-                                itemstyle-Width="15%" />
+                                itemstyle-Width="15%" ReadOnly="true" />
                             <asp:TemplateField>
                                 <itemstyle width="5%" horizontalalign="Center" /> 
                                 <itemtemplate>

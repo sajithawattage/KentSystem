@@ -316,7 +316,7 @@
                                 ItemStyle-HorizontalAlign="Center"
                                 HeaderStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Remarks" HeaderText="Remarks"
-                                ItemStyle-Width="15%" />
+                                ItemStyle-Width="15%" ReadOnly="true" />
                             <asp:TemplateField>
                                 <ItemStyle Width="5%" HorizontalAlign="Center" />
                                 <ItemTemplate>
