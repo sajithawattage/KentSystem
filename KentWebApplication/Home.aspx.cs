@@ -1,4 +1,4 @@
-﻿	using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web;
@@ -10,123 +10,126 @@ using SLII_Web.Classes;
 
 namespace KentWebApplication
 {
-	public partial class Home : ParentPage
-	{
-		#region Member
+    public partial class Home : ParentPage
+    {
+        #region Member
 
-		private string	userName			= string.Empty;
-		private HomeDAO homeDao				= null;
+        private string userName = string.Empty;
+        private HomeDAO homeDao = null;
 
-		#endregion
+        #endregion
 
-		#region Constant
+        #region Constant
 
-		protected const string ROLE_ADMIN				= "1";
-		protected const string ROLE_MANAGER				= "2";
-		protected const string ROLE_ENGINEER			= "3";
+        protected const string ROLE_ADMIN = "1";
+        protected const string ROLE_MANAGER = "2";
+        protected const string ROLE_ENGINEER = "3";
 
-		protected const string URL_ESTIMATION			= "Estimation.aspx?jid={0}&cid={1}&type={2}&eid={3}&mid={4}";
-		protected const string URL_MATERIAL_REQUEST		= "MaterialRequest.aspx?jid={0}&cid={1}&eid={2}&tid={3}";
-		protected const string URL_MATERIAL_LIST		= "MaterialRequestlist.aspx?jid={0}&cid={1}&eid={2}";
+        protected const string URL_ESTIMATION = "Estimation.aspx?jid={0}&cid={1}&type={2}&eid={3}&mid={4}";
+        protected const string URL_MATERIAL_REQUEST = "MaterialRequest.aspx?jid={0}&cid={1}&eid={2}&tid={3}";
+        protected const string URL_MATERIAL_LIST = "MaterialRequestlist.aspx?jid={0}&cid={1}&eid={2}";
 
-        protected const string URL_QUOTATION_ESTIMATE       = "EstimateQuotation.aspx?jid={0}&cid={1}&eid={2}&tid={3}";
-        protected const string URL_QUOTATION_ESTIMATE_LIST  = "EstimateQuotationList.aspx?jid={0}&cid={1}&eid={2}";
+        protected const string URL_QUOTATION_ESTIMATE = "EstimateQuotation.aspx?jid={0}&cid={1}&eid={2}&tid={3}";
+        protected const string URL_QUOTATION_ESTIMATE_LIST = "EstimateQuotationList.aspx?jid={0}&cid={1}&eid={2}";
 
 
-		#endregion
+        #endregion
 
-		#region Event
+        #region Event
 
-		protected void Page_Load(object sender, EventArgs e)
-		{
+        protected void Page_Load(object sender, EventArgs e)
+        {
 
-			if(homeDao == null)
-			{
-				homeDao						= new HomeDAO();
-			}
+            if (homeDao == null)
+            {
+                homeDao = new HomeDAO();
+            }
 
-			if (!IsPostBack)
-			{
-				userName					= this.Context.User.Identity.Name;
-				if (userName != string.Empty)
-				{
-					this.BindSitesByUser(userName);
+            if (!IsPostBack)
+            {
+                userName = this.Context.User.Identity.Name;
+                if (userName != string.Empty)
+                {
+                    this.BindSitesByUser(userName);
 
-					this.GetUserStatistics(userName);
-				}
-				else
-				{
-					Response.Redirect("~/Login.aspx");
-				}
-			}
-		}
+                    this.GetUserStatistics(userName);
 
-		protected void hlProfile_Click(object sender, EventArgs e)
-		{
+                    //disable SubEstimate
 
-		}
+                }
+                else
+                {
+                    Response.Redirect("~/Login.aspx");
+                }
+            }
+        }
 
-		protected void hlSignOut_Click(object sender, EventArgs e)
-		{
-			HttpCookie dummyCookie = new HttpCookie(FormsAuthentication.FormsCookieName, String.Empty);
+        protected void hlProfile_Click(object sender, EventArgs e)
+        {
 
-			// Add cookie to response, and do not cache it.
-			Response.Cookies.Add(dummyCookie);
-			Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        }
 
-			// Sign out of forms authentication.
-			FormsAuthentication.SignOut();
+        protected void hlSignOut_Click(object sender, EventArgs e)
+        {
+            HttpCookie dummyCookie = new HttpCookie(FormsAuthentication.FormsCookieName, String.Empty);
 
-			// Abandon the session
-			Session.Abandon();
+            // Add cookie to response, and do not cache it.
+            Response.Cookies.Add(dummyCookie);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
 
-			// Redirect to the home page (which FormsAuthentication should pick up, and redirect to the login).
-			Response.Redirect("Login.aspx");
-		}
+            // Sign out of forms authentication.
+            FormsAuthentication.SignOut();
 
-		protected void rpSites_ItemDataBound(object sender, RepeaterItemEventArgs e)
-		{
-			HyperLink hlEstimate			        = (HyperLink)e.Item.FindControl("hlEstimation");
-			HyperLink hlMaterialRequest		        = (HyperLink)e.Item.FindControl("hlMaterialRequest");
-			HyperLink hlMaterialRequestList	        = (HyperLink)e.Item.FindControl("hlMaterialRequestList");
-			HyperLink hlQuotationEstimate	        = (HyperLink)e.Item.FindControl("hlQuotaionEstimate");
-			HyperLink hlQuotationEstimateList	    = (HyperLink)e.Item.FindControl("hlQuotaionEstimateList");
+            // Abandon the session
+            Session.Abandon();
 
-			HiddenField hfCustomerCode		        = (HiddenField)e.Item.FindControl("hfCId");
-			HiddenField hfJobCode			        = (HiddenField)e.Item.FindControl("hfJId");
-			HiddenField hfEngineerCode		        = (HiddenField)e.Item.FindControl("hfEId");
-			HiddenField hfManagerCode		        = (HiddenField)e.Item.FindControl("hfMId");
-			HiddenField hfEstimationType	        = (HiddenField)e.Item.FindControl("hfType");
-			HiddenField hfManagerStatus		        = (HiddenField)e.Item.FindControl("hfMStatus");
-			HiddenField hfEngineerStatus	        = (HiddenField)e.Item.FindControl("hfEStatus");
-            HiddenField hfEstimateManagerStatus     = (HiddenField)e.Item.FindControl("hfESMStatus");
-            HiddenField hfEstimateEngineerStatus    = (HiddenField)e.Item.FindControl("hfESEStatus");
-            HiddenField hfMrActive                  = (HiddenField)e.Item.FindControl("hfMra"); 
+            // Redirect to the home page (which FormsAuthentication should pick up, and redirect to the login).
+            Response.Redirect("Login.aspx");
+        }
 
-			if(hlEstimate != null && hfCustomerCode != null && hfJobCode != null &&
-					hfEngineerCode != null && hfManagerCode != null && hfEstimationType != null)
-			{
-				string formattedUrl = string.Format(URL_ESTIMATION, new object[]{
-																		hfJobCode.Value.ToString(),
-																		hfCustomerCode.Value.ToString(),
-																		hfEstimationType.Value.ToString(),
-																		hfEngineerCode.Value.ToString(),
-																		hfManagerCode.Value.ToString()
-																	});	
+        protected void rpSites_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            HyperLink hlEstimate = (HyperLink)e.Item.FindControl("hlEstimation");
+            HyperLink hlMaterialRequest = (HyperLink)e.Item.FindControl("hlMaterialRequest");
+            HyperLink hlMaterialRequestList = (HyperLink)e.Item.FindControl("hlMaterialRequestList");
+            HyperLink hlQuotationEstimate = (HyperLink)e.Item.FindControl("hlQuotaionEstimate");
+            HyperLink hlQuotationEstimateList = (HyperLink)e.Item.FindControl("hlQuotaionEstimateList");
 
-				hlEstimate.NavigateUrl			    = formattedUrl;
-				hlEstimate.Text					    = this.GetLinkNameByType(Convert.ToInt32(hfEstimationType.Value));
-			}
+            HiddenField hfCustomerCode = (HiddenField)e.Item.FindControl("hfCId");
+            HiddenField hfJobCode = (HiddenField)e.Item.FindControl("hfJId");
+            HiddenField hfEngineerCode = (HiddenField)e.Item.FindControl("hfEId");
+            HiddenField hfManagerCode = (HiddenField)e.Item.FindControl("hfMId");
+            HiddenField hfEstimationType = (HiddenField)e.Item.FindControl("hfType");
+            HiddenField hfManagerStatus = (HiddenField)e.Item.FindControl("hfMStatus");
+            HiddenField hfEngineerStatus = (HiddenField)e.Item.FindControl("hfEStatus");
+            HiddenField hfEstimateManagerStatus = (HiddenField)e.Item.FindControl("hfESMStatus");
+            HiddenField hfEstimateEngineerStatus = (HiddenField)e.Item.FindControl("hfESEStatus");
+            HiddenField hfMrActive = (HiddenField)e.Item.FindControl("hfMra");
 
-			if (hlMaterialRequest != null && hlMaterialRequestList != null)
-			{
-				
-				//get material request list url
-				hlMaterialRequestList.NavigateUrl   = string.Format(URL_MATERIAL_LIST, new object[]{
-																		hfJobCode.Value.ToString(),
-																		hfCustomerCode.Value.ToString(),
-																		hfEngineerCode.Value.ToString()
-																	});
+            if (hlEstimate != null && hfCustomerCode != null && hfJobCode != null &&
+                    hfEngineerCode != null && hfManagerCode != null && hfEstimationType != null)
+            {
+                string formattedUrl = string.Format(URL_ESTIMATION, new object[]{
+                                                                        hfJobCode.Value.ToString(),
+                                                                        hfCustomerCode.Value.ToString(),
+                                                                        hfEstimationType.Value.ToString(),
+                                                                        hfEngineerCode.Value.ToString(),
+                                                                        hfManagerCode.Value.ToString()
+                                                                    });
+
+                hlEstimate.NavigateUrl = formattedUrl;
+                hlEstimate.Text = this.GetLinkNameByType(Convert.ToInt32(hfEstimationType.Value));
+            }
+
+            if (hlMaterialRequest != null && hlMaterialRequestList != null)
+            {
+
+                //get material request list url
+                hlMaterialRequestList.NavigateUrl = string.Format(URL_MATERIAL_LIST, new object[]{
+                                                                        hfJobCode.Value.ToString(),
+                                                                        hfCustomerCode.Value.ToString(),
+                                                                        hfEngineerCode.Value.ToString()
+                                                                    });
 
 
                 this.HandleMRButtonBehaviour(hfJobCode.Value.ToString(), hfCustomerCode.Value.ToString(), hfEngineerCode.Value.ToString(),
@@ -137,15 +140,15 @@ namespace KentWebApplication
 
                 this.HandleSubEstimationListButtonBehaviour(hfJobCode.Value.ToString(), hfCustomerCode.Value.ToString(), hfEngineerCode.Value.ToString(), hlQuotationEstimateList);
 
-			}
-		}
+            }
+        }
 
         /// <summary>
         /// Handles the behaviour of the estimation button
         /// </summary>
-        private void HandleMRButtonBehaviour(string jobCode, string customerCode, string engineerCode, HyperLink hlMaterialRequest, string engineerState, string managerState, string mrActive) 
+        private void HandleMRButtonBehaviour(string jobCode, string customerCode, string engineerCode, HyperLink hlMaterialRequest, string engineerState, string managerState, string mrActive)
         {
-            if(mrActive == "Y")
+            if (mrActive == "Y")
             {
                 hlMaterialRequest.Enabled = true;
 
@@ -171,17 +174,23 @@ namespace KentWebApplication
         /// <summary>
         /// handles the sub estimation button click event
         /// </summary>
-        private void HandleSubEstimationButtonBehaviour(string jobCode, string customerCode, string engineerCode, HyperLink hlQuotationEstimate, string engineerState, string managerState, int estimateState) 
+        private void HandleSubEstimationButtonBehaviour(string jobCode, string customerCode, string engineerCode, HyperLink hlQuotationEstimate, string engineerState, string managerState, int estimateState)
         {
             if (estimateState == 3 || estimateState == 4)
             {
-                int estimateStatus = this.GetESTypebyStatus(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState));
+                if (DisableSubEstimate(Convert.ToInt32(customerCode), Convert.ToInt32(jobCode), engineerCode))
+                {
+                    hlQuotationEstimate.Enabled = false;
+                }
+                else
+                {
+                    int estimateStatus = this.GetESTypebyStatus(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState));
 
-                hlQuotationEstimate.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE, new object[]{ jobCode, customerCode, engineerCode,
-																		                            estimateStatus.ToString() });
+                    hlQuotationEstimate.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE, new object[]{ jobCode, customerCode, engineerCode,
+                                                                                                    estimateStatus.ToString() });
 
-                GetSubEstimateLinkNameByType(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState), hlQuotationEstimate);
-
+                    GetSubEstimateLinkNameByType(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState), hlQuotationEstimate);
+                }
             }
             else
             {
@@ -211,128 +220,145 @@ namespace KentWebApplication
         /// <summary>
         /// handles the sub estimate list button click
         /// </summary>
-        private void HandleSubEstimationListButtonBehaviour(string jobCode, string customerCode, string engineerCode, HyperLink hlQuotationEstimateList) 
+        private void HandleSubEstimationListButtonBehaviour(string jobCode, string customerCode, string engineerCode, HyperLink hlQuotationEstimateList)
         {
-            hlQuotationEstimateList.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE_LIST, new object[]{ jobCode, customerCode, engineerCode });
+            hlQuotationEstimateList.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE_LIST, new object[] { jobCode, customerCode, engineerCode });
         }
 
-        
-		#endregion
 
-		#region Methods
+        #endregion
 
-		public void BindSitesByUser(string userName)
-		{
-			DataTable dtSites	= null;
-        
-			string empCode		= homeDao.GetEmployeeCodeByUserName(userName);
+        #region Methods
 
-			if (empCode != string.Empty)
-			{
-				if(User.IsInRole(ROLE_ENGINEER))
-				{
-					dtSites		= this.GetSitesByEngineer(empCode);
+        public void BindSitesByUser(string userName)
+        {
+            DataTable dtSites = null;
 
-					if (dtSites != null && dtSites.Rows.Count > 0)
-					{
-						rpSites.DataSource = dtSites;
-						rpSites.DataBind();
-					}
+            string empCode = homeDao.GetEmployeeCodeByUserName(userName);
 
-				}
-				else if(User.IsInRole(ROLE_MANAGER))
-				{
-					dtSites		= this.GetSitesByManager(empCode);
+            if (empCode != string.Empty)
+            {
+                if (User.IsInRole(ROLE_ENGINEER))
+                {
+                    dtSites = this.GetSitesByEngineer(empCode);
 
-					if (dtSites != null && dtSites.Rows.Count > 0)
-					{
-						rpSites.DataSource = dtSites;
-						rpSites.DataBind();
-					}
-				}
-			}
-		}
+                    if (dtSites != null && dtSites.Rows.Count > 0)
+                    {
+                        rpSites.DataSource = dtSites;
+                        rpSites.DataBind();
+                    }
 
-		public void GetUserStatistics(string userName)
-		{
-			DataTable dtDetails  =  homeDao.GetUserStatistics(userName);
-			if (dtDetails != null && dtDetails.Rows.Count > 0)
-			{
-				litUserName.Text	= dtDetails.Rows[0]["EngineerName"].ToString();
-			}
-		}
+                }
+                else if (User.IsInRole(ROLE_MANAGER))
+                {
+                    dtSites = this.GetSitesByManager(empCode);
 
-		/// <summary>
-		/// 
-		/// </summary>
-		protected DataTable GetSitesByManager(string empCode)
-		{
-			DataTable dtSites = homeDao.GetSitesByManager(empCode);
-			return dtSites;
+                    if (dtSites != null && dtSites.Rows.Count > 0)
+                    {
+                        rpSites.DataSource = dtSites;
+                        rpSites.DataBind();
+                    }
+                }
+            }
+        }
 
-		}
-		
-		/// <summary>
-		/// Get the site engineer details by employee code
-		/// </summary>
-		protected DataTable GetSitesByEngineer(string empCode)
-		{
-			DataTable dtSites = homeDao.GetSitesByEngineer(empCode);
-			return dtSites;
-		}
+        public void GetUserStatistics(string userName)
+        {
+            DataTable dtDetails = homeDao.GetUserStatistics(userName);
+            if (dtDetails != null && dtDetails.Rows.Count > 0)
+            {
+                litUserName.Text = dtDetails.Rows[0]["EngineerName"].ToString();
+            }
+        }
 
-		/// <summary>
-		/// get the link name by the type of the link. This will display in the fornt end
-		/// </summary>
-		protected string GetLinkNameByType(int type)
-		{
-			switch(type)
-			{
-				case 1:
-					default:
-					return "New Estimate";
-				case 2:
-					return "Edit Estimate";
-				case 3:
-					return "View Estimate";
-				case 4:
-					return "View Estimate";
-			}
-		}
+        public bool DisableSubEstimate(int customerId, int jobId, string engineerId)
+        {
+            var result = false;
+            var sEstimateCount = homeDao.GetSEstimateCount(customerId, jobId);
+            EstimationDAO estimateDao = new EstimationDAO();
 
-		/// <summary>
-		/// get the name of the material request by manager and engineer status
-		/// </summary>
-		protected void GetMRLinkNameByType(string eType, string mType, HyperLink hlMaterialRequest)
-		{
-			hlMaterialRequest.Text			= "New Material Request";
+            DataTable dtEstimateHeader = estimateDao.GetEstimationHeader(customerId, jobId, engineerId);
+            if (dtEstimateHeader != null && dtEstimateHeader.Rows.Count > 0)
+            {
+                var maxSubEstimates = Convert.ToInt32(dtEstimateHeader.Rows[0]["MaxSubEstimates"].ToString());
+                if (sEstimateCount >= maxSubEstimates)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected DataTable GetSitesByManager(string empCode)
+        {
+            DataTable dtSites = homeDao.GetSitesByManager(empCode);
+            return dtSites;
 
-			if (eType == "NEW" && mType == "NEW")
-			{
-				hlMaterialRequest.Text		= "New Material Request";
-				hlMaterialRequest.CssClass	= "btn bg-olive margin";
-			}
-			else if (eType == "ENTRY" && mType == "NEW")
-			{
-				hlMaterialRequest.Text		= "Edit Material Request";
-				hlMaterialRequest.CssClass	= "btn bg-maroon margin";
-			}
-		}
+        }
 
-		/// <summary>
-		/// Get Material request type according to the engineer and manager status
-		/// </summary>
-		protected int GetMRTypeByStatus(string eType, string mType)
-		{	
-			int name			= 0;
+        /// <summary>
+        /// Get the site engineer details by employee code
+        /// </summary>
+        protected DataTable GetSitesByEngineer(string empCode)
+        {
+            DataTable dtSites = homeDao.GetSitesByEngineer(empCode);
+            return dtSites;
+        }
+
+        /// <summary>
+        /// get the link name by the type of the link. This will display in the fornt end
+        /// </summary>
+        protected string GetLinkNameByType(int type)
+        {
+            switch (type)
+            {
+                case 1:
+                default:
+                    return "New Estimate";
+                case 2:
+                    return "Edit Estimate";
+                case 3:
+                    return "View Estimate";
+                case 4:
+                    return "View Estimate";
+            }
+        }
+
+        /// <summary>
+        /// get the name of the material request by manager and engineer status
+        /// </summary>
+        protected void GetMRLinkNameByType(string eType, string mType, HyperLink hlMaterialRequest)
+        {
+            hlMaterialRequest.Text = "New Material Request";
+
+            if (eType == "NEW" && mType == "NEW")
+            {
+                hlMaterialRequest.Text = "New Material Request";
+                hlMaterialRequest.CssClass = "btn bg-olive margin";
+            }
+            else if (eType == "ENTRY" && mType == "NEW")
+            {
+                hlMaterialRequest.Text = "Edit Material Request";
+                hlMaterialRequest.CssClass = "btn bg-maroon margin";
+            }
+        }
+
+        /// <summary>
+        /// Get Material request type according to the engineer and manager status
+        /// </summary>
+        protected int GetMRTypeByStatus(string eType, string mType)
+        {
+            int name = 0;
 
             if ((eType == "ENTRY" && mType == "NEW") || (eType == "CONFIRM" && mType == "NEW"))
-			{
-				name			=  1;
-			}
+            {
+                name = 1;
+            }
 
-			return name;
-		}
+            return name;
+        }
 
         /// <summary>
         /// 
@@ -340,7 +366,7 @@ namespace KentWebApplication
         /// <param name="eType"></param>
         /// <param name="mType"></param>
         /// <returns></returns>
-        protected int GetESTypebyStatus(string eType, string mType) 
+        protected int GetESTypebyStatus(string eType, string mType)
         {
             int name = 0;
 
@@ -355,33 +381,33 @@ namespace KentWebApplication
 
             return name;
         }
-		 
-		/// <summary>
-		/// process the manager state
-		/// </summary>
-		protected string ProcessManagerStatus(string statusValue)
-		{
-			if (statusValue == string.Empty)
-			{
-				statusValue		= "NEW";
-			}
-			return statusValue;
-		}
 
-		protected string ProcessEngineerStatus(string statusValue)
-		{
-			if (statusValue == string.Empty)
-			{
-				statusValue		= "NEW";
-			}
-			return statusValue;
-		}
-		#endregion
+        /// <summary>
+        /// process the manager state
+        /// </summary>
+        protected string ProcessManagerStatus(string statusValue)
+        {
+            if (statusValue == string.Empty)
+            {
+                statusValue = "NEW";
+            }
+            return statusValue;
+        }
+
+        protected string ProcessEngineerStatus(string statusValue)
+        {
+            if (statusValue == string.Empty)
+            {
+                statusValue = "NEW";
+            }
+            return statusValue;
+        }
+        #endregion
 
         protected void rpSites_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
 
         }
 
-	}
+    }
 }

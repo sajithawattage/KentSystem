@@ -143,7 +143,7 @@ namespace DAO
 			string			qCandidateStatus	= "sp_web_GetUserDetails";
 			
 			try
-			{
+			{ 
 				param							= new SqlParameter[1];
 
 				param[0]						= new SqlParameter("@user_name", userName);
@@ -159,7 +159,26 @@ namespace DAO
 			}
 		}
 
-		#endregion
-	}
+        public int GetSEstimateCount(int customerId, int jobId)
+        {
+            string qGetSEstimateCount = "sp_GetSEstimateCount";
+            SqlParameter[] param = null;
+            try
+            {
+                param = new SqlParameter[2];
+
+                param[0] = new SqlParameter("@CustomerCode", customerId);
+                param[1] = new SqlParameter("@JobCode", jobId);
+
+                return Convert.ToInt32(myConn.ExecuteScalarProcedure(qGetSEstimateCount, param));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
+        #endregion
+    }
 
 }
