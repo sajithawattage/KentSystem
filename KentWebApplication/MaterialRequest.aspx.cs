@@ -659,7 +659,7 @@ namespace KentWebApplication
             if (!RequiredDateValidation())
             {
                 status = false;
-                SetMessage(2, "Required Date should not be with in 7 days from today.");
+                SetMessage(2, "Required Date should not be with in 21 days from today.");
             }
 
 			return status;
