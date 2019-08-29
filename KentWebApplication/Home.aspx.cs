@@ -1,10 +1,12 @@
-﻿using DAO;
-using SLII_Web.Classes;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Web;
 using System.Web.Security;
+using System.Web.UI;
 using System.Web.UI.WebControls;
+using DAO;
+using SLII_Web.Classes;
 
 namespace KentWebApplication
 {
@@ -51,12 +53,20 @@ namespace KentWebApplication
                     this.BindSitesByUser(userName);
 
                     this.GetUserStatistics(userName);
+
+                    //disable SubEstimate
+
                 }
                 else
                 {
                     Response.Redirect("~/Login.aspx");
                 }
             }
+        }
+
+        protected void hlProfile_Click(object sender, EventArgs e)
+        {
+
         }
 
         protected void hlSignOut_Click(object sender, EventArgs e)
@@ -168,12 +178,19 @@ namespace KentWebApplication
         {
             if (estimateState == 3 || estimateState == 4)
             {
-                int estimateStatus = this.GetESTypebyStatus(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState));
+                if (DisableSubEstimate(Convert.ToInt32(customerCode), Convert.ToInt32(jobCode), engineerCode))
+                {
+                    hlQuotationEstimate.Enabled = false;
+                }
+                else
+                {
+                    int estimateStatus = this.GetESTypebyStatus(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState));
 
-                hlQuotationEstimate.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE, new object[]{ jobCode, customerCode, engineerCode,
+                    hlQuotationEstimate.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE, new object[]{ jobCode, customerCode, engineerCode,
                                                                                                     estimateStatus.ToString() });
 
-                GetSubEstimateLinkNameByType(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState), hlQuotationEstimate);
+                    GetSubEstimateLinkNameByType(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState), hlQuotationEstimate);
+                }
             }
             else
             {
@@ -207,6 +224,7 @@ namespace KentWebApplication
         {
             hlQuotationEstimateList.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE_LIST, new object[] { jobCode, customerCode, engineerCode });
         }
+
 
         #endregion
 
@@ -253,6 +271,23 @@ namespace KentWebApplication
             }
         }
 
+        public bool DisableSubEstimate(int customerId, int jobId, string engineerId)
+        {
+            var result = false;
+            var sEstimateCount = homeDao.GetSEstimateCount(customerId, jobId);
+            EstimationDAO estimateDao = new EstimationDAO();
+
+            DataTable dtEstimateHeader = estimateDao.GetEstimationHeader(customerId, jobId, engineerId);
+            if (dtEstimateHeader != null && dtEstimateHeader.Rows.Count > 0)
+            {
+                var maxSubEstimates = Convert.ToInt32(dtEstimateHeader.Rows[0]["MaxSubEstimates"].ToString());
+                if (sEstimateCount >= maxSubEstimates)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -368,5 +403,11 @@ namespace KentWebApplication
             return statusValue;
         }
         #endregion
+
+        protected void rpSites_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+        }
+
     }
 }
