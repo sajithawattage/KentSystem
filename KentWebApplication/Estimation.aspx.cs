@@ -1,52 +1,52 @@
-﻿using System;
+﻿using DAO;
+using KentWebApplication.Classes;
+using SLII_Web.Classes;
+using System;
 using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Script.Services;
 using System.Web.UI.WebControls;
-using DAO;
-using KentWebApplication.Classes;
-using SLII_Web.Classes;
-using System.Web;
 
 namespace KentWebApplication.Pages
 {
     public partial class Estimation : System.Web.UI.Page
-	{
-		#region Constant
+    {
+        #region Constant
 
-        private const string SESSION_ITEM_TABLE			    = "ITEM_TABLE";
-        protected const string SESSION_ITEM_TABLE_FILTER    = "ITEM_TABLE_FILTERED";
-        private const string SESSION_CUSTOMER_ID			= "CUSTOMER_ID";
-        private const string SESSION_JOB_ID				    = "JOB_ID";
-        private const string SESSION_FORM_MODE			    = "FORM_MODE";
-        private const string SESSION_ESTIMATION_ID		    = "ESTIMATION_ID";
-        private const string SESSION_ENGINEER_ID			= "ENGINEER_ID";
-        private const string SESSION_MANAGER_ID			    = "MANAGER_ID";
+        private const string SESSION_ITEM_TABLE = "ITEM_TABLE";
+        protected const string SESSION_ITEM_TABLE_FILTER = "ITEM_TABLE_FILTERED";
+        private const string SESSION_CUSTOMER_ID = "CUSTOMER_ID";
+        private const string SESSION_JOB_ID = "JOB_ID";
+        private const string SESSION_FORM_MODE = "FORM_MODE";
+        private const string SESSION_ESTIMATION_ID = "ESTIMATION_ID";
+        private const string SESSION_ENGINEER_ID = "ENGINEER_ID";
+        private const string SESSION_MANAGER_ID = "MANAGER_ID";
 
-        private const string VIEWSTATE_EDIT_MODE			= "IS_EDIT";
+        private const string VIEWSTATE_EDIT_MODE = "IS_EDIT";
 
-        private const string STATUS_SAVE					= "ENTRY";
-        private const string STATUS_FINISH				    = "FINISH";
+        private const string STATUS_SAVE = "ENTRY";
+        private const string STATUS_FINISH = "FINISH";
 
-        private const string QUERY_CUSTOMER_CODE			= "cid";
-        private const string QUERY_JOB_CODE				    = "jid";
-        private const string QUERY_ESTIMATION_CODE		    = "eid";
-        private const string QUERY_MANAGER_CODE			    = "mid";
-        private const string QUERY_TYPE_CODE				= "type";
+        private const string QUERY_CUSTOMER_CODE = "cid";
+        private const string QUERY_JOB_CODE = "jid";
+        private const string QUERY_ESTIMATION_CODE = "eid";
+        private const string QUERY_MANAGER_CODE = "mid";
+        private const string QUERY_TYPE_CODE = "type";
 
-        private const string COMMAND_REMOVE				    = "Remove";
-        private const string COMMAND_EDIT					= "Change";
+        private const string COMMAND_REMOVE = "Remove";
+        private const string COMMAND_EDIT = "Change";
 
-        private const string COLUMN_ITEM_CODE				= "ItemCode";
-        private const string COLUMN_ITEM_NAME				= "ItemName";
-        private const string COLUMN_ITEM_QTY				= "QTY";
-        private const string COLUMN_ITEM_AMOUNT			    = "Amount";
-        private const string COLUMN_ITEM_TOTAL			    = "Total";
-        private const string COLUMN_ITEM_ORDER              = "itemIndex";
-        private const string COLUMN_ITEM_UOM				= "MainMeasure";
-        private const string COLUMN_ITEM_REMARKS			= "Remarks";
+        private const string COLUMN_ITEM_CODE = "ItemCode";
+        private const string COLUMN_ITEM_NAME = "ItemName";
+        private const string COLUMN_ITEM_QTY = "QTY";
+        private const string COLUMN_ITEM_AMOUNT = "Amount";
+        private const string COLUMN_ITEM_TOTAL = "Total";
+        private const string COLUMN_ITEM_ORDER = "itemIndex";
+        private const string COLUMN_ITEM_UOM = "MainMeasure";
+        private const string COLUMN_ITEM_REMARKS = "Remarks";
 
         //protected const string COLUMN_ITEM_CODE = "ItemCode";
         //protected const string COLUMN_ITEM_NAME = "ItemName";
@@ -57,88 +57,88 @@ namespace KentWebApplication.Pages
         //protected const string COLUMN_ITEM_ORDER = "OrderNo";
         //protected const string COLUMN_ITEM_UOM = "MainMeasure";
 
-        private const string COLUMN_ITEM_FINAL_QTY          = "FinalQty";
-        private const string COLUMN_ITEM_ISSUE_QTY          = "IssuedQty";
-        private const string COLUMN_ITEM_REQUEST_QTY        = "RequestedQty";
-        private const string COLUMN_ITEM_PENDING_QTY        = "PendingQty";
-        private const string COLUMN_ITEM_BALANCE_QTY        = "BalanceQty";
+        private const string COLUMN_ITEM_FINAL_QTY = "FinalQty";
+        private const string COLUMN_ITEM_ISSUE_QTY = "IssuedQty";
+        private const string COLUMN_ITEM_REQUEST_QTY = "RequestedQty";
+        private const string COLUMN_ITEM_PENDING_QTY = "PendingQty";
+        private const string COLUMN_ITEM_BALANCE_QTY = "BalanceQty";
 
 
 
-		#endregion
+        #endregion
 
-		#region Enum
+        #region Enum
 
-		public enum Mode
-		{
-			New			= 0,
-			Saved		= 1,
-			Submitted	= 2,
-			Approved	= 3
-		}
-
-		#endregion
-
-		#region Member
-
-		private		DataTable			dt					= new DataTable();
-        private		DataRow				dr					= null;
-        private		EstimationDAO		objEstimationDAO	= null;
-
-        private const string          SESSION_PROJECT_NAME            = "PROJECT_NAME";
-        private const string          SESSION_JOB_NAME                = "JOB_NAME";
-        private const string          SESSION_ENGINEER_NAME           = "ENGINEER_NAME";
-        private const string          SESSION_MANAGER_NAME            = "MANAGER_NAME";
-        private const string          SESSION_MANAGER_EMAIL_ADDRESS   = "MANAGER_EMAIL_ADDRESS";
-
-        private int					customerCode		= -1;
-        private int					jobCode				= -1;
-        private int					engineerCode		= -1;
-        private int					managerCode			= -1;
-        private int					status				= -1;
-        private int					intTotal			= -1;
-
-        private Mode				formMode			= Mode.New;
-
-		#endregion
-
-		#region Events
-
-		protected void Page_Load(object sender, EventArgs e)
+        public enum Mode
         {
-            if (!IsPostBack) 
+            New = 0,
+            Saved = 1,
+            Submitted = 2,
+            Approved = 3
+        }
+
+        #endregion
+
+        #region Member
+
+        private DataTable dt = new DataTable();
+        private DataRow dr = null;
+        private EstimationDAO objEstimationDAO = null;
+
+        private const string SESSION_PROJECT_NAME = "PROJECT_NAME";
+        private const string SESSION_JOB_NAME = "JOB_NAME";
+        private const string SESSION_ENGINEER_NAME = "ENGINEER_NAME";
+        private const string SESSION_MANAGER_NAME = "MANAGER_NAME";
+        private const string SESSION_MANAGER_EMAIL_ADDRESS = "MANAGER_EMAIL_ADDRESS";
+
+        private int customerCode = -1;
+        private int jobCode = -1;
+        private int engineerCode = -1;
+        private int managerCode = -1;
+        private int status = -1;
+        private int intTotal = -1;
+
+        private Mode formMode = Mode.New;
+
+        #endregion
+
+        #region Events
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
             {
                 //get values from the query string
                 this.PopulateQueryString();
 
                 //reset session
-                Session[SESSION_ITEM_TABLE]					= null;
-				Session[SESSION_ESTIMATION_ID]				= null;
+                Session[SESSION_ITEM_TABLE] = null;
+                Session[SESSION_ESTIMATION_ID] = null;
 
-				//reset view state
-				ViewState[VIEWSTATE_EDIT_MODE]				= false;
-				
-				if (status != -1)
-				{
-					this.InitForm();
-				}
+                //reset view state
+                ViewState[VIEWSTATE_EDIT_MODE] = false;
+
+                if (status != -1)
+                {
+                    this.InitForm();
+                }
 
                 //add values to session
                 this.SetInitialSessionValues();
 
             }
-			else
-			{
-				if (Session[SESSION_FORM_MODE] != null)
-				{
-					FormMode								= (Mode)Session[SESSION_FORM_MODE];
-				}
-				else
-				{
-					Response.Redirect("~/Home.aspx");
-				}
-				
-			}
+            else
+            {
+                if (Session[SESSION_FORM_MODE] != null)
+                {
+                    FormMode = (Mode)Session[SESSION_FORM_MODE];
+                }
+                else
+                {
+                    Response.Redirect("~/Home.aspx");
+                }
+
+            }
 
         }
 
@@ -147,11 +147,11 @@ namespace KentWebApplication.Pages
         /// </summary>
         private void PopulateQueryString()
         {
-            customerCode        = General.GetQueryStringInt(Request.QueryString[QUERY_CUSTOMER_CODE]);
-            jobCode             = General.GetQueryStringInt(Request.QueryString[QUERY_JOB_CODE]);
-            engineerCode        = General.GetQueryStringInt(Request.QueryString[QUERY_ESTIMATION_CODE]);
-            managerCode         = General.GetQueryStringInt(Request.QueryString[QUERY_MANAGER_CODE]);
-            status              = General.GetQueryStringInt(Request.QueryString[QUERY_TYPE_CODE]);
+            customerCode = General.GetQueryStringInt(Request.QueryString[QUERY_CUSTOMER_CODE]);
+            jobCode = General.GetQueryStringInt(Request.QueryString[QUERY_JOB_CODE]);
+            engineerCode = General.GetQueryStringInt(Request.QueryString[QUERY_ESTIMATION_CODE]);
+            managerCode = General.GetQueryStringInt(Request.QueryString[QUERY_MANAGER_CODE]);
+            status = General.GetQueryStringInt(Request.QueryString[QUERY_TYPE_CODE]);
         }
 
         /// <summary>
@@ -180,41 +180,41 @@ namespace KentWebApplication.Pages
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-			this.Save(STATUS_SAVE);
+            this.Save(STATUS_SAVE);
         }
 
 
         protected void grdClosedExams_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-			if (e.CommandName == COMMAND_REMOVE)
-			{
-				if ((DataTable)Session[SESSION_ITEM_TABLE] != null)
-				{
-					dt										= (DataTable)Session[SESSION_ITEM_TABLE];
-					if (dt.Rows.Count > 0)
-					{
-						dt.PrimaryKey					= new DataColumn[1] { dt.Columns["ItemCode"] };  // set your primary key
-						DataRow dRow						= dt.Rows.Find(e.CommandArgument);
-						if (dRow != null)
-						{
-							dt.Rows.Remove(dRow);
+            if (e.CommandName == COMMAND_REMOVE)
+            {
+                if ((DataTable)Session[SESSION_ITEM_TABLE] != null)
+                {
+                    dt = (DataTable)Session[SESSION_ITEM_TABLE];
+                    if (dt.Rows.Count > 0)
+                    {
+                        dt.PrimaryKey = new DataColumn[1] { dt.Columns["ItemCode"] };  // set your primary key
+                        DataRow dRow = dt.Rows.Find(e.CommandArgument);
+                        if (dRow != null)
+                        {
+                            dt.Rows.Remove(dRow);
 
-							txtTotalItem.Text					= dt.Rows.Count.ToString();
-							//set data table to session 
-							Session[SESSION_ITEM_TABLE]			= dt;
-						}
-					}
-				}
-			}
-			else if(e.CommandName == COMMAND_EDIT)
-			{
-				var			index							= e.CommandArgument.ToString();
+                            txtTotalItem.Text = dt.Rows.Count.ToString();
+                            //set data table to session 
+                            Session[SESSION_ITEM_TABLE] = dt;
+                        }
+                    }
+                }
+            }
+            else if (e.CommandName == COMMAND_EDIT)
+            {
+                var index = e.CommandArgument.ToString();
                 this.SetEditMode(index);
-                
-			}
 
-			grdItems.DataSource								= dt;
-			grdItems.DataBind();
+            }
+
+            grdItems.DataSource = dt;
+            grdItems.DataBind();
 
         }
 
@@ -251,13 +251,13 @@ namespace KentWebApplication.Pages
 
         protected void btnRemoveItem_Click(object sender, EventArgs e)
         {
-            string pName									= grdItems.SelectedRow.Cells[1].Text;
+            string pName = grdItems.SelectedRow.Cells[1].Text;
         }
 
-		/// <summary>
-		/// handle button click event
-		/// </summary>
-		protected void btnAddItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// handle button click event
+        /// </summary>
+        protected void btnAddItem_Click(object sender, EventArgs e)
         {
             if ((DataTable)Session[SESSION_ITEM_TABLE] != null)
             {
@@ -392,19 +392,19 @@ namespace KentWebApplication.Pages
         /// 
         /// </summary>
         protected void grdItems_RowEditing(object sender, GridViewEditEventArgs e)
-		{
-			grdItems.EditIndex = e.NewEditIndex;
+        {
+            grdItems.EditIndex = e.NewEditIndex;
 
-			grdItems.DataSource = (DataTable)Session[SESSION_ITEM_TABLE];
-			grdItems.DataBind();
-		}
+            grdItems.DataSource = (DataTable)Session[SESSION_ITEM_TABLE];
+            grdItems.DataBind();
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		protected void grdItems_PageIndexChanging(object sender, GridViewPageEventArgs e)
-		{
-			
+        /// <summary>
+        /// 
+        /// </summary>
+        protected void grdItems_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+
             grdItems.PageIndex = e.NewPageIndex;
 
             if ((DataView)Session[SESSION_ITEM_TABLE_FILTER] != null)
@@ -419,186 +419,186 @@ namespace KentWebApplication.Pages
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Methods
-        
-		/// <summary>
-		/// Initialize form with the data
-		/// </summary>
-		protected void InitForm()
-		{
-			dtApplyDate.Text						= DateTime.Now.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture);
-			switch (status)
-			{
-				case 1:
-				default:
-					FormMode						= Mode.New;
+        #region Methods
 
-					Session.Add(SESSION_FORM_MODE, FormMode);
-					
-					this.LoadSiteDetails(customerCode, jobCode);
+        /// <summary>
+        /// Initialize form with the data
+        /// </summary>
+        protected void InitForm()
+        {
+            dtApplyDate.Text = DateTime.Now.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture);
+            switch (status)
+            {
+                case 1:
+                default:
+                    FormMode = Mode.New;
 
-					this.GenerateEstimationID();
-					//generate id for 
+                    Session.Add(SESSION_FORM_MODE, FormMode);
 
-					break;
-				case 2:
-					FormMode						= Mode.Saved;
+                    this.LoadSiteDetails(customerCode, jobCode);
 
-					Session.Add(SESSION_FORM_MODE, FormMode);
-					
-					//get estimation header
-					this.LoadSiteDetails(customerCode, jobCode);
-
-					break;
-				case 3: // view 
-					FormMode					    = Mode.Submitted;
-
-					Session.Add(SESSION_FORM_MODE, FormMode);
-
-					this.LoadSiteDetails(customerCode, jobCode);
-
-					//enable hidden columns
-					this.DisableForm();
-                    break;
-				case 4:
-					FormMode					    = Mode.Approved;
-					Session.Add(SESSION_FORM_MODE, FormMode);
-
-					this.LoadSiteDetails(customerCode, jobCode);
-
-					this.DisableForm();
+                    this.GenerateEstimationID();
+                    //generate id for 
 
                     break;
-			}
+                case 2:
+                    FormMode = Mode.Saved;
 
-		}
+                    Session.Add(SESSION_FORM_MODE, FormMode);
 
-		/// <summary>
-		/// load site details
-		/// </summary>
-		private void LoadSiteDetails(int customerId, int jobId)
-		{
-			DataTable dtSiteDetails				        = null;
+                    //get estimation header
+                    this.LoadSiteDetails(customerCode, jobCode);
 
-		    if(objEstimationDAO == null)
-			{
-				objEstimationDAO				        = new EstimationDAO();
-			}
+                    break;
+                case 3: // view 
+                    FormMode = Mode.Submitted;
+
+                    Session.Add(SESSION_FORM_MODE, FormMode);
+
+                    this.LoadSiteDetails(customerCode, jobCode);
+
+                    //enable hidden columns
+                    this.DisableForm();
+                    break;
+                case 4:
+                    FormMode = Mode.Approved;
+                    Session.Add(SESSION_FORM_MODE, FormMode);
+
+                    this.LoadSiteDetails(customerCode, jobCode);
+
+                    this.DisableForm();
+
+                    break;
+            }
+
+        }
+
+        /// <summary>
+        /// load site details
+        /// </summary>
+        private void LoadSiteDetails(int customerId, int jobId)
+        {
+            DataTable dtSiteDetails = null;
+
+            if (objEstimationDAO == null)
+            {
+                objEstimationDAO = new EstimationDAO();
+            }
 
             dtSiteDetails = objEstimationDAO.GetSiteDetailsByJobCustomerCode(customerId, jobId, engineerCode);
 
-			if (dtSiteDetails != null && dtSiteDetails.Rows.Count > 0)
-			{
-				txtManager.Text						    = dtSiteDetails.Rows[0]["ManagerName"].ToString();
-				txtEngineer.Text					    = dtSiteDetails.Rows[0]["EnginnerName"].ToString();
+            if (dtSiteDetails != null && dtSiteDetails.Rows.Count > 0)
+            {
+                txtManager.Text = dtSiteDetails.Rows[0]["ManagerName"].ToString();
+                txtEngineer.Text = dtSiteDetails.Rows[0]["EnginnerName"].ToString();
 
-				litProjectName.Text					    = $"{dtSiteDetails.Rows[0]["CustomerName"].ToString()} | {dtSiteDetails.Rows[0]["JobName"].ToString()}";
+                litProjectName.Text = $"{dtSiteDetails.Rows[0]["CustomerName"].ToString()} | {dtSiteDetails.Rows[0]["JobName"].ToString()}";
 
-                Session[SESSION_PROJECT_NAME]           = dtSiteDetails.Rows[0]["CustomerName"].ToString();
-                Session[SESSION_JOB_NAME]               = dtSiteDetails.Rows[0]["JobName"].ToString();
-                Session[SESSION_MANAGER_NAME]           = dtSiteDetails.Rows[0]["ManagerName"].ToString();
-                Session[SESSION_ENGINEER_NAME]          = dtSiteDetails.Rows[0]["EnginnerName"].ToString();
-                Session[SESSION_MANAGER_EMAIL_ADDRESS]  = dtSiteDetails.Rows[0]["ManagerEmailAddress"].ToString();
+                Session[SESSION_PROJECT_NAME] = dtSiteDetails.Rows[0]["CustomerName"].ToString();
+                Session[SESSION_JOB_NAME] = dtSiteDetails.Rows[0]["JobName"].ToString();
+                Session[SESSION_MANAGER_NAME] = dtSiteDetails.Rows[0]["ManagerName"].ToString();
+                Session[SESSION_ENGINEER_NAME] = dtSiteDetails.Rows[0]["EnginnerName"].ToString();
+                Session[SESSION_MANAGER_EMAIL_ADDRESS] = dtSiteDetails.Rows[0]["ManagerEmailAddress"].ToString();
 
 
-                var dtEstimationHeader		            = objEstimationDAO.GetEstimationHeader(customerId, jobId, engineerCode.ToString());
-				if(dtEstimationHeader != null && dtEstimationHeader.Rows.Count > 0)
-				{
-					txtEstimationId.Text			    = dtEstimationHeader.Rows[0]["EstimateNo"].ToString();
-					dtApplyDate.Text				    = Convert.ToDateTime(dtEstimationHeader.Rows[0]["EntryDate"])
-																			.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture);
+                var dtEstimationHeader = objEstimationDAO.GetEstimationHeader(customerId, jobId, engineerCode.ToString());
+                if (dtEstimationHeader != null && dtEstimationHeader.Rows.Count > 0)
+                {
+                    txtEstimationId.Text = dtEstimationHeader.Rows[0]["EstimateNo"].ToString();
+                    dtApplyDate.Text = Convert.ToDateTime(dtEstimationHeader.Rows[0]["EntryDate"])
+                                                                            .ToString("yyyy/MM/dd", CultureInfo.InvariantCulture);
 
-					//set estimation value
-					Session[SESSION_ESTIMATION_ID]	    = dtEstimationHeader.Rows[0]["EstimateNo"].ToString();
-					
-					var dtEstimationDetails		        = objEstimationDAO.GetEstimationDetails(Convert.ToInt32(txtEstimationId.Text.Trim()));
+                    //set estimation value
+                    Session[SESSION_ESTIMATION_ID] = dtEstimationHeader.Rows[0]["EstimateNo"].ToString();
+
+                    var dtEstimationDetails = objEstimationDAO.GetEstimationDetails(Convert.ToInt32(txtEstimationId.Text.Trim()));
 
                     if (dtEstimationDetails != null && dtEstimationDetails.Rows.Count > 0)
-					{
-						txtTotalItem.Text			    = dtEstimationDetails.Rows.Count.ToString();
+                    {
+                        txtTotalItem.Text = dtEstimationDetails.Rows.Count.ToString();
 
-						//set to session
-						Session[SESSION_ITEM_TABLE]	    = dtEstimationDetails;
+                        //set to session
+                        Session[SESSION_ITEM_TABLE] = dtEstimationDetails;
 
-						grdItems.DataSource			    = dtEstimationDetails;
-						grdItems.DataBind();
-					}
-				}
-			}
-		}
+                        grdItems.DataSource = dtEstimationDetails;
+                        grdItems.DataBind();
+                    }
+                }
+            }
+        }
 
-		/// <summary>
-		/// Reset the form
-		/// </summary>
+        /// <summary>
+        /// Reset the form
+        /// </summary>
         private void ResetForm()
         {
-            txtItemId.Text						        = string.Empty;
-            txtItemName.Text					        = string.Empty;
-            txtQty.Text							        = string.Empty;
-			txtUnitofMeasure.Text				        = string.Empty;
-			txtRemarks.Text						        = string.Empty;
+            txtItemId.Text = string.Empty;
+            txtItemName.Text = string.Empty;
+            txtQty.Text = string.Empty;
+            txtUnitofMeasure.Text = string.Empty;
+            txtRemarks.Text = string.Empty;
         }
-		
-		/// <summary>
-		/// Add the rows
-		/// </summary>
+
+        /// <summary>
+        /// Add the rows
+        /// </summary>
         private void AddRows(string ItemId, string ItemName, string QTY, string uom, string remarks)
         {
-			if (dt != null)
-			{
-				dr								= dt.NewRow();
-            
-				dr[COLUMN_ITEM_CODE]			= ItemId;
-				dr[COLUMN_ITEM_NAME]			= ItemName;
-				dr[COLUMN_ITEM_QTY]				= QTY;
-				dr[COLUMN_ITEM_ORDER]			= dt.Rows.Count + 1;
-				dr[COLUMN_ITEM_UOM]				= uom;
-				dr[COLUMN_ITEM_REMARKS]			= remarks;
+            if (dt != null)
+            {
+                dr = dt.NewRow();
 
-				dr[COLUMN_ITEM_FINAL_QTY]		= "0";
-				dr[COLUMN_ITEM_ISSUE_QTY]		= "0";
-                dr[COLUMN_ITEM_REQUEST_QTY]     = "0";
-                dr[COLUMN_ITEM_PENDING_QTY]     = "0";
-                dr[COLUMN_ITEM_BALANCE_QTY]     = "0";
-				
-				dt.Rows.Add(dr);
-			}
+                dr[COLUMN_ITEM_CODE] = ItemId;
+                dr[COLUMN_ITEM_NAME] = ItemName;
+                dr[COLUMN_ITEM_QTY] = QTY;
+                dr[COLUMN_ITEM_ORDER] = dt.Rows.Count + 1;
+                dr[COLUMN_ITEM_UOM] = uom;
+                dr[COLUMN_ITEM_REMARKS] = remarks;
+
+                dr[COLUMN_ITEM_FINAL_QTY] = "0";
+                dr[COLUMN_ITEM_ISSUE_QTY] = "0";
+                dr[COLUMN_ITEM_REQUEST_QTY] = "0";
+                dr[COLUMN_ITEM_PENDING_QTY] = "0";
+                dr[COLUMN_ITEM_BALANCE_QTY] = "0";
+
+                dt.Rows.Add(dr);
+            }
         }
-		
-		/// <summary>
-		/// validate the form
-		/// </summary>
-		private bool ValidateForm()
-		{
-			bool result = true;
 
-			if (Session[SESSION_CUSTOMER_ID] == null)
-			{
-				result = false;
-			}
-			else if (Session[SESSION_JOB_ID] == null)
-			{
-				result = false;
-			}
-			return result;
-		}
-		
-		/// <summary>
-		/// Set message 
-		/// </summary>
-		private void SetMessage(int type, string message)
+        /// <summary>
+        /// validate the form
+        /// </summary>
+        private bool ValidateForm()
+        {
+            bool result = true;
+
+            if (Session[SESSION_CUSTOMER_ID] == null)
+            {
+                result = false;
+            }
+            else if (Session[SESSION_JOB_ID] == null)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Set message 
+        /// </summary>
+        private void SetMessage(int type, string message)
         {
             switch (type)
             {
                 case 1: // Success
-                    success_alert.Visible		= true;
-                    litSuccessMessage.Text		= message;
+                    success_alert.Visible = true;
+                    litSuccessMessage.Text = message;
                     break;
                 case 2: // Error
-                    error_alert.Visible			= true;
-                    litErrorMessage.Text		= message;
+                    error_alert.Visible = true;
+                    litErrorMessage.Text = message;
                     break;
                 case 3:
                     duplicate_alert.Visible = true;
@@ -632,7 +632,7 @@ namespace KentWebApplication.Pages
                 this.SetMessage(3, "Item already exists.");
             }
 
-            
+
             hfEditingItemNo.Value = itemId;
         }
 
@@ -641,48 +641,48 @@ namespace KentWebApplication.Pages
         /// save the form values
         /// </summary>
         private bool Save(string type)
-		{
-			var status									= false;
-			try
+        {
+            var status = false;
+            try
             {
-                if(this.ValidateForm())
-				{
-				    DAO.Entities.Estimation objEstimation = new DAO.Entities.Estimation
-				    {
-				        CustomerID = Convert.ToInt32(Session[SESSION_CUSTOMER_ID].ToString()),
-				        jobID = Convert.ToInt32(Session[SESSION_JOB_ID].ToString()),
-				        Manager = txtManager.Text.Trim(),
-				        Engineer = txtEngineer.Text.Trim(),
-				        Applydate = Convert.ToDateTime(dtApplyDate.Text.Trim()),
-				        EngineerId = Convert.ToInt32(Session[SESSION_ENGINEER_ID].ToString()),
-				        ManagerId = Convert.ToInt32(Session[SESSION_MANAGER_ID].ToString()),
-				        Status = type
-				    };
+                if (this.ValidateForm())
+                {
+                    DAO.Entities.Estimation objEstimation = new DAO.Entities.Estimation
+                    {
+                        CustomerID = Convert.ToInt32(Session[SESSION_CUSTOMER_ID].ToString()),
+                        jobID = Convert.ToInt32(Session[SESSION_JOB_ID].ToString()),
+                        Manager = txtManager.Text.Trim(),
+                        Engineer = txtEngineer.Text.Trim(),
+                        Applydate = Convert.ToDateTime(dtApplyDate.Text.Trim()),
+                        EngineerId = Convert.ToInt32(Session[SESSION_ENGINEER_ID].ToString()),
+                        ManagerId = Convert.ToInt32(Session[SESSION_MANAGER_ID].ToString()),
+                        Status = type
+                    };
 
 
-				    if (objEstimationDAO == null)
-					{
-						objEstimationDAO				= new EstimationDAO();
-					}
+                    if (objEstimationDAO == null)
+                    {
+                        objEstimationDAO = new EstimationDAO();
+                    }
 
-					if (FormMode == Mode.New)
-					{
-						//get new estimation id
-						objEstimation.EstimationID		= Convert.ToInt32(this.GenerateEstimationID());
-						status							= objEstimationDAO.SaveEstimation(objEstimation, (DataTable)Session[SESSION_ITEM_TABLE]);
-					}
-					else if (FormMode == Mode.Saved)
-					{
-						//get old estimation id
-						if (Session[SESSION_ESTIMATION_ID] != null)
-						{
-							objEstimation.EstimationID		= Convert.ToInt32(Session[SESSION_ESTIMATION_ID].ToString());
-							status							= objEstimationDAO.UpdateEstimation(objEstimation, (DataTable)Session[SESSION_ITEM_TABLE]);
-						}
-					}
+                    if (FormMode == Mode.New)
+                    {
+                        //get new estimation id
+                        objEstimation.EstimationID = Convert.ToInt32(this.GenerateEstimationID());
+                        status = objEstimationDAO.SaveEstimation(objEstimation, (DataTable)Session[SESSION_ITEM_TABLE]);
+                    }
+                    else if (FormMode == Mode.Saved)
+                    {
+                        //get old estimation id
+                        if (Session[SESSION_ESTIMATION_ID] != null)
+                        {
+                            objEstimation.EstimationID = Convert.ToInt32(Session[SESSION_ESTIMATION_ID].ToString());
+                            status = objEstimationDAO.UpdateEstimation(objEstimation, (DataTable)Session[SESSION_ITEM_TABLE]);
+                        }
+                    }
 
-					if (status)
-					{
+                    if (status)
+                    {
                         if (type == STATUS_FINISH)
                         {
                             //send email
@@ -715,18 +715,18 @@ namespace KentWebApplication.Pages
                         {
                             this.SetMessage(1, "Successfully saved.");
                         }
-						
-						Session[SESSION_FORM_MODE]			= Mode.Saved;
-						Session[SESSION_ESTIMATION_ID]		= objEstimation.EstimationID;
 
-						FormMode							= Mode.Saved;
-					}
-					else
-					{
-						this.SetMessage(2, "Error occurred while saving data");
-					}
-				}
-                    
+                        Session[SESSION_FORM_MODE] = Mode.Saved;
+                        Session[SESSION_ESTIMATION_ID] = objEstimation.EstimationID;
+
+                        FormMode = Mode.Saved;
+                    }
+                    else
+                    {
+                        this.SetMessage(2, "Error occurred while saving data");
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -735,75 +735,75 @@ namespace KentWebApplication.Pages
 
             return status;
 
-		}
+        }
 
-		/// <summary>
-		/// automatically generates an id for the estimation
-		/// </summary>
-		protected string GenerateEstimationID()
-		{
-			string estimationId				= string.Empty;
-			if(objEstimationDAO == null)
-			{
-				objEstimationDAO			= new EstimationDAO();
-			}
+        /// <summary>
+        /// automatically generates an id for the estimation
+        /// </summary>
+        protected string GenerateEstimationID()
+        {
+            string estimationId = string.Empty;
+            if (objEstimationDAO == null)
+            {
+                objEstimationDAO = new EstimationDAO();
+            }
 
-			estimationId					= objEstimationDAO.GetNextEstimationId();
-			if (estimationId != string.Empty)
-			{
-				txtEstimationId.Text		= estimationId;
-			}
-			return estimationId;
-		}
+            estimationId = objEstimationDAO.GetNextEstimationId();
+            if (estimationId != string.Empty)
+            {
+                txtEstimationId.Text = estimationId;
+            }
+            return estimationId;
+        }
 
-		/// <summary>
-		/// disable the form values
-		/// </summary>
-		protected void DisableForm()
-		{
-			txtEstimationId.Enabled			= false;
-			dtApplyDate.Enabled				= false;
-			
-			txtItemId.Enabled				= false;
-			txtItemName.Enabled				= false;
-			txtQty.Enabled					= false;
-			txtUnitofMeasure.Enabled		= false;
-			btnAdd.Enabled					= false;
+        /// <summary>
+        /// disable the form values
+        /// </summary>
+        protected void DisableForm()
+        {
+            txtEstimationId.Enabled = false;
+            dtApplyDate.Enabled = false;
 
-			btnSubmitForApproval.Enabled	= false;
-			btnSave.Enabled					= false;
+            txtItemId.Enabled = false;
+            txtItemName.Enabled = false;
+            txtQty.Enabled = false;
+            txtUnitofMeasure.Enabled = false;
+            btnAdd.Enabled = false;
 
-			//grdItems.Enabled				= false;
+            btnSubmitForApproval.Enabled = false;
+            btnSave.Enabled = false;
 
-		}
+            //grdItems.Enabled				= false;
 
-		/// <summary>
-		/// validations 
-		/// </summary>
-		/// <returns></returns>
-		protected bool Validations()
-		{
-			if (txtItemId.Text.Trim() == string.Empty)
-			{
-				return false;
-			}
-			else if (txtItemName.Text.Trim() == string.Empty)
-			{
-				return false;
-			}
-			else if (txtQty.Text.Trim() == string.Empty)
-			{
-				return false;
-			}
-			else if(Validation.IsNumeric(txtQty.Text.Trim()))
-			{
-				return true;
-			}
-			else
-			{
-				return true;
-			}
-		}
+        }
+
+        /// <summary>
+        /// validations 
+        /// </summary>
+        /// <returns></returns>
+        protected bool Validations()
+        {
+            if (txtItemId.Text.Trim() == string.Empty)
+            {
+                return false;
+            }
+            else if (txtItemName.Text.Trim() == string.Empty)
+            {
+                return false;
+            }
+            else if (txtQty.Text.Trim() == string.Empty)
+            {
+                return false;
+            }
+            else if (Validation.IsNumeric(txtQty.Text.Trim()))
+            {
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         /// <summary>
         /// Generate the email body
@@ -821,53 +821,47 @@ namespace KentWebApplication.Pages
             return message.ToString();
         }
 
-		#endregion
+        #endregion
 
-		#region Web Methods
+        #region Web Methods
 
-		[System.Web.Services.WebMethod]
+        [System.Web.Services.WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string[] GetAllItems(string prefix)
         {
-            EstimationDAO			objEstimationDAO	= new EstimationDAO();
+            EstimationDAO objEstimationDAO = new EstimationDAO();
 
             return objEstimationDAO.GetAllItems(HttpUtility.UrlDecode(prefix), 1);
         }
-       
-		#endregion
 
-		#region Properties
+        #endregion
 
-		/// <summary>
-		/// Mode of the form
-		/// </summary>
-		public Mode FormMode
-		{
-			set { this.formMode = value; }
-			get { return this.formMode; }
-		}
+        #region Properties
 
-		#endregion
-
-		protected void grdItems_DataBound(object sender, EventArgs e)
-		{
-		    if (FormMode == Mode.New || FormMode == Mode.Saved)
-		    {
-		        grdItems.Columns[5].Visible = false;
-		        grdItems.Columns[6].Visible = false;
-		        grdItems.Columns[7].Visible = false;
-		    }
-		}
-
-        protected void grdItems_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Mode of the form
+        /// </summary>
+        public Mode FormMode
         {
+            set { this.formMode = value; }
+            get { return this.formMode; }
+        }
 
+        #endregion
+
+        protected void grdItems_DataBound(object sender, EventArgs e)
+        {
+            if (FormMode == Mode.New || FormMode == Mode.Saved)
+            {
+                grdItems.Columns[5].Visible = false;
+                grdItems.Columns[6].Visible = false;
+                grdItems.Columns[7].Visible = false;
+            }
         }
 
         protected void txtQty_TextChanged1(object sender, EventArgs e)
         {
-            decimal value;
-            if (decimal.TryParse(txtQty.Text, out value))
+            if (decimal.TryParse(txtQty.Text, out decimal value))
             // It's a decimal
             { }
             else
@@ -924,5 +918,5 @@ namespace KentWebApplication.Pages
                 grdItems.DataBind();
             }
         }
-	}
+    }
 }

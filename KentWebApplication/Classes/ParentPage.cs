@@ -1,69 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using Entities;
+﻿using Entities;
+using System;
 
 namespace SLII_Web.Classes
 {
-	public class ParentPage  : System.Web.UI.Page
-	{
+    public class ParentPage : System.Web.UI.Page
+    {
+        #region Events
 
-		#region Members
+        protected void Page_Init(object sender, System.EventArgs e)
+        {
+            if (Context.User != null && Context.User.Identity.IsAuthenticated)
+            {
+                Account = new UserAccount(Context.User.Identity.Name);
+            }
+        }
 
-		private UserAccount account		= null;
+        #endregion
 
-		#endregion
+        #region Properties
 
-		#region Methods
+        public UserAccount Account { get; private set; } = null;
 
-		/// <summary>
-		/// 
-		/// </summary>
-		private void GetAccountFromSession()
-		{
-			
-		}
-		
-		#endregion
+        public string UserName
+        {
+            get { return Context.User.Identity.Name; }
+        }
 
-		#region Events
-
-		/// <summary>
-		/// 
-		/// </summary>
-		protected void Page_Init(object sender, System.EventArgs e)
-		{
-			if (this.Context.User != null && this.Context.User.Identity.IsAuthenticated)
-			{
-				// Get account
-				account					= new UserAccount(this.Context.User.Identity.Name);
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="e"></param>
-		override protected void OnPreInit(EventArgs e)
-		{
-
-		}
-
-		#endregion
-
-		#region Properties
-
-		public UserAccount Account
-		{
-			get { return this.account; }
-		}
-
-		public string UserName
-		{
-			get { return this.Context.User.Identity.Name; }
-		}
-		
-		#endregion
-
-	}
+        #endregion
+    }
 }
