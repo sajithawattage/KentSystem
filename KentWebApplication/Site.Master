@@ -9,9 +9,7 @@
     <title>Kent Engineers (PVT) LTD | Request Handling System</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-
     <link href="css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
-
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
     <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
@@ -23,10 +21,6 @@
     <link href="plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
     <!-- Daterange picker -->
     <link href="plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
-    <!-- bootstrap wysihtml5 - text editor -->
-    <link href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-    <!-- iCheck -->
-    <link href="plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
 
     <link href="css/table.css" rel="stylesheet" />
 
@@ -59,9 +53,7 @@
                         </li>
                     </ul>
                 </div>
-
             </nav>
-
         </header>
 
         <aside class="main-sidebar">
@@ -119,16 +111,8 @@
                     <asp:ScriptReference Path="js/jquery-1.11.2.min.js" />
                     <asp:ScriptReference Path="js/jquery-ui-1.10.0.custom.min.js" />
                     <asp:ScriptReference Path="js/bootstrap.min.js" />
-                    <asp:ScriptReference Path="plugins/sparkline/jquery.sparkline.min.js" />
-                    <asp:ScriptReference Path="plugins/daterangepicker/daterangepicker.js" />
                     <asp:ScriptReference Path="plugins/datepicker/bootstrap-datepicker.js" />
-                    <asp:ScriptReference Path="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" />
-                    <asp:ScriptReference Path="plugins/iCheck/icheck.min.js" />
-                    <asp:ScriptReference Path="plugins/slimScroll/jquery.slimscroll.min.js" />
-                    <asp:ScriptReference Path="plugins/datatables/jquery.dataTables.js" />
-                    <asp:ScriptReference Path="plugins/datatables/dataTables.bootstrap.js" />
                     <asp:ScriptReference Path="js/AdminLTE/app.js" />
-
                 </Scripts>
             </asp:ScriptManager>
 
@@ -143,8 +127,5 @@
             </asp:ContentPlaceHolder>
         </form>
     </div>
-
-
-
 </body>
 </html>
