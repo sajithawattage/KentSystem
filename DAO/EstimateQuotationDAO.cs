@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 
 namespace DAO
 {
     public class EstimateQuotationDAO
     {
-
         #region Member
 
         DBConnection myConn = null;
@@ -23,7 +20,10 @@ namespace DAO
         /// </summary>
         public EstimateQuotationDAO()
         {
-            myConn = new DBConnection();
+            if (myConn == null)
+            {
+                myConn = new DBConnection();
+            }
         }
 
         #endregion
@@ -42,9 +42,9 @@ namespace DAO
                 dtSites = myConn.ExecuteProcedure(qSites);
                 return dtSites;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -54,40 +54,40 @@ namespace DAO
         /// <returns></returns>
         public string[] GetEstimationItems(string prefix, int estimationId, int customerCode, int jobCode)
         {
-            DataTable       dtItems         = null;
-            string          qAllItems       = "Sp_GetAllItemsForSubEstimate";
+            DataTable dtItems = null;
+            string qAllItems = "Sp_GetAllItemsForSubEstimate";
 
-            List<string>    objItems        = new List<string>();
+            List<string> objItems = new List<string>();
 
             try
-            {   
-                SqlParameter[] param        = new SqlParameter[4];
+            {
+                SqlParameter[] param = new SqlParameter[4];
 
-                param[0]                    = new SqlParameter("@term", prefix);
-                param[1]                    = new SqlParameter("@type", 1);
-                param[2]                    = new SqlParameter("@customerCode", customerCode);
-                param[3]                    = new SqlParameter("@jobCode", jobCode);
+                param[0] = new SqlParameter("@term", prefix);
+                param[1] = new SqlParameter("@type", 1);
+                param[2] = new SqlParameter("@customerCode", customerCode);
+                param[3] = new SqlParameter("@jobCode", jobCode);
 
-                dtItems                     = myConn.ExecuteProcedure(qAllItems, param);
-                
+                dtItems = myConn.ExecuteProcedure(qAllItems, param);
+
                 foreach (DataRow dr in dtItems.Rows)
                 {
-                    objItems.Add(string.Format("{0}~{1}~{2}~{3}~{4}~{5}~{6}", dr["ItemCode"].ToString(),
-                                                                    dr["ItemDescription"].ToString(),
-                                                                    dr["MainMeasure"].ToString(),
-                                                                    dr["Qty"].ToString(),
-                                                                    dr["FinalQty"].ToString(),
-                                                                    dr["IssuedQty"].ToString(),
-                                                                    dr["RequestedQty"].ToString()));
+                    objItems.Add(string.Format("{0}~{1}~{2}~{3}~{4}~{5}~{6}", 
+                        dr["ItemCode"].ToString(),
+                        dr["ItemDescription"].ToString(),
+                        dr["MainMeasure"].ToString(),
+                        dr["Qty"].ToString(),
+                        dr["FinalQty"].ToString(),
+                        dr["IssuedQty"].ToString(),
+                        dr["RequestedQty"].ToString()));
                 }
 
                 return objItems.ToArray();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
-
         }
 
         public string GetEstimationItemById(string itemCode)
@@ -375,24 +375,24 @@ namespace DAO
         /// </summary>
         public bool UpdateMaterialRequest(Entities.EstimateQuotation objMaterialRequest, DataTable DT)
         {
-            SqlTransaction  trans                   = null;
-            SqlParameter[]  param_header            = null;
-            SqlParameter[]  param_detail_remove     = null;
-            SqlParameter[]  param_details           = null;
+            SqlTransaction trans = null;
+            SqlParameter[] param_header = null;
+            SqlParameter[] param_detail_remove = null;
+            SqlParameter[] param_details = null;
 
-            SqlConnection   conn                    = myConn.OpenConnection();
+            SqlConnection conn = myConn.OpenConnection();
 
-            string          qMrHeader               = "sp_web_UpdateESHeader";
-            string          qDeleteMrDetails        = "sp_web_DeleteESDetails";
-            string          qMrDetails              = "Sp_ESDetails";
+            string qMrHeader = "sp_web_UpdateESHeader";
+            string qDeleteMrDetails = "sp_web_DeleteESDetails";
+            string qMrDetails = "Sp_ESDetails";
 
-            bool            status                  = false;
+            bool status = false;
 
             try
             {
-                trans                               = conn.BeginTransaction();
+                trans = conn.BeginTransaction();
 
-                param_header                        = new SqlParameter[14];
+                param_header = new SqlParameter[14];
 
                 param_header[0] = new SqlParameter("@MRNumber", objMaterialRequest.MrNumber);
                 param_header[1] = new SqlParameter("@MRBookNumber", objMaterialRequest.MrBookNumber);

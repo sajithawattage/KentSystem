@@ -39,15 +39,14 @@ namespace DAO
             try
             {
                 param = new SqlParameter[1];
-
                 param[0] = new SqlParameter("@username", userName);
 
                 dtUserAccount = myConn.ExecuteProcedure(qUserAccount, param);
                 return dtUserAccount;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -73,15 +72,16 @@ namespace DAO
 
             if (dtUserAccount != null && dtUserAccount.Rows.Count > 0)
             {
-                account = new UserAccount(dtUserAccount.Rows[0]["UserName"].ToString());
-
-                account.UserName = dtUserAccount.Rows[0]["UserName"].ToString();
-                account.DisplayName = dtUserAccount.Rows[0]["DisplayName"].ToString();
-                account.Email = dtUserAccount.Rows[0]["Email"].ToString();
-                account.Role = Convert.ToInt32(dtUserAccount.Rows[0]["Role"]);
-                account.Status = Convert.ToInt32(dtUserAccount.Rows[0]["Status"]);
-                account.EncryptedPassword = dtUserAccount.Rows[0]["Password"].ToString();
-                account.EmployeeCode = dtUserAccount.Rows[0]["EmpCode"].ToString();
+                account = new UserAccount(dtUserAccount.Rows[0]["UserName"].ToString())
+                {
+                    UserName = dtUserAccount.Rows[0]["UserName"].ToString(),
+                    DisplayName = dtUserAccount.Rows[0]["DisplayName"].ToString(),
+                    Email = dtUserAccount.Rows[0]["Email"].ToString(),
+                    Role = Convert.ToInt32(dtUserAccount.Rows[0]["Role"]),
+                    Status = Convert.ToInt32(dtUserAccount.Rows[0]["Status"]),
+                    EncryptedPassword = dtUserAccount.Rows[0]["Password"].ToString(),
+                    EmployeeCode = dtUserAccount.Rows[0]["EmpCode"].ToString()
+                };
             }
 
             return account;
@@ -94,9 +94,8 @@ namespace DAO
         public enum Role
         {
             ADMIN = 1,
-            MANAGER,
-            ENGINEER
-
+            MANAGER = 2,
+            ENGINEER = 3
         }
 
         #endregion

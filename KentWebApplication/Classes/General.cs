@@ -1,63 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace SLII_Web.Classes
 {
-	public class General
-	{
+    public class General
+    {
+        /// <summary>
+        /// Get Decryption value of the encrypted text
+        /// </summary>
+        public static string GetDecryptedValue(string encryptedValue, string key)
+        {
+            byte[] inputArray = Convert.FromBase64String(encryptedValue);
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider
+            {
+                Key = Encoding.UTF8.GetBytes(key),
+                Mode = CipherMode.ECB,
+                Padding = PaddingMode.PKCS7
+            };
+            ICryptoTransform cTransform = tripleDES.CreateDecryptor();
 
-		/// <summary>
-		/// Get Decryption value of the encrypted text
-		/// </summary>
-		public static string GetDecryptedValue(string encryptedValue, string key)
-		{
-			byte[] inputArray							= Convert.FromBase64String(encryptedValue);
-			TripleDESCryptoServiceProvider tripleDES	= new TripleDESCryptoServiceProvider();
+            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
+            tripleDES.Clear();
 
-			tripleDES.Key								= UTF8Encoding.UTF8.GetBytes(key);
-			tripleDES.Mode								= CipherMode.ECB;
-			tripleDES.Padding							= PaddingMode.PKCS7;
-			ICryptoTransform cTransform					= tripleDES.CreateDecryptor();
+            return UTF8Encoding.UTF8.GetString(resultArray);
+        }
 
-			byte[] resultArray							= cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
-			tripleDES.Clear();
-			
-			return UTF8Encoding.UTF8.GetString(resultArray);
-		}
+        /// <summary>
+        /// Get Encryption value of the plain text
+        /// </summary>
+        public static string GetEncryptedValue(string decryptedValue, string key)
+        {
+            byte[] inputArray = Encoding.UTF8.GetBytes(decryptedValue);
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider
+            {
+                Key = Encoding.UTF8.GetBytes(key),
+                Mode = CipherMode.ECB,
+                Padding = PaddingMode.PKCS7
+            };
+            ICryptoTransform cTransform = tripleDES.CreateEncryptor();
 
-		/// <summary>
-		/// Get Encryption value of the plain text
-		/// </summary>
-		public static string GetEncryptedValue(string decryptedValue, string key)
-		{
-			byte[] inputArray							= UTF8Encoding.UTF8.GetBytes(decryptedValue);
-			TripleDESCryptoServiceProvider tripleDES	= new TripleDESCryptoServiceProvider();
+            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
+            tripleDES.Clear();
 
-			tripleDES.Key								= UTF8Encoding.UTF8.GetBytes(key);
-			tripleDES.Mode								= CipherMode.ECB;
-			tripleDES.Padding							= PaddingMode.PKCS7;
-			ICryptoTransform cTransform					= tripleDES.CreateEncryptor();
+            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+        }
 
-			byte[] resultArray							= cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
-			tripleDES.Clear();
+        public static int GetQueryStringInt(string value)
+        {
+            int rValue = -1;
 
-			return Convert.ToBase64String(resultArray, 0, resultArray.Length);
-		}
+            if (value != string.Empty)
+            {
+                int.TryParse(value, out rValue);
+            }
 
-		public static int GetQueryStringInt(string value)
-		{
-			int		rValue								= -1;
+            return rValue;
+        }
 
-			if (value != string.Empty)
-			{
-				Int32.TryParse(value, out rValue);
-			}
-
-			return rValue;
-		}
-
-	}
+    }
 }
