@@ -9,7 +9,7 @@ namespace DAO
     {
         #region Member
 
-        DBConnection myConn = null;
+        private readonly DBConnection myConn = null;
 
         #endregion
 

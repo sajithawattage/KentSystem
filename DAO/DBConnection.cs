@@ -46,7 +46,7 @@ namespace DAO
             _connection.Dispose();
         }
 
-        public SqlTransaction CreateTransaction(SqlConnection conn)
+        public static SqlTransaction CreateTransaction(SqlConnection conn)
         {
             return conn.BeginTransaction();
         }

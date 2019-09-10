@@ -870,12 +870,7 @@ namespace KentWebApplication.Pages
             }
             // No it's not
         }
-
-        protected void btnClearAll_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         protected void btnMsg_OnClick(object sender, EventArgs e)
         {
             var index = hfEditingItemNo.Value;

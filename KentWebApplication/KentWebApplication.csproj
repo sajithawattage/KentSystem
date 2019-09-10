@@ -97,6 +97,7 @@
     <Content Include="css\skins\_all-skins.css" />
     <Content Include="css\skins\_all-skins.min.css" />
     <Content Include="css\table.css" />
+    <Content Include="EmailTest.aspx" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\ionicons.svg" />
@@ -310,6 +311,13 @@
     </Compile>
     <Compile Include="Common\Controls\Notification.ascx.designer.cs">
       <DependentUpon>Notification.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EmailTest.aspx.cs">
+      <DependentUpon>EmailTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmailTest.aspx.designer.cs">
+      <DependentUpon>EmailTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
