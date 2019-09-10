@@ -465,12 +465,11 @@ namespace KentWebApplication
                 SmtpPassword = Config.SmtpPassword,
                 ToAddress = Session[SESSION_MANAGER_EMAIL_ADDRESS].ToString(),
                 Subject = "New Sub Estimation Received ",
-                Body = GenerateEmailBody(
-                                                    Session[SESSION_PROJECT_NAME].ToString(),
-                                                    Session[SESSION_JOB_NAME].ToString(),
-                                                    Session[SESSION_ENGINEER_NAME].ToString(),
-                                                    receivedData,
-                                                    mrNumber)
+                Body = GenerateEmailBody(Session[SESSION_PROJECT_NAME].ToString(),
+                                         Session[SESSION_JOB_NAME].ToString(),
+                                         Session[SESSION_ENGINEER_NAME].ToString(),
+                                         receivedData,
+                                         mrNumber)
             };
 
             try
@@ -478,7 +477,7 @@ namespace KentWebApplication
                 email.SendMail();
                 result = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

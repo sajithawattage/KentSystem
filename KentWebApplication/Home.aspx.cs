@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DAO;
+using SLII_Web.Classes;
+using System;
 using System.Data;
 using System.Web;
 using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using DAO;
-using SLII_Web.Classes;
 
 namespace KentWebApplication
 {
@@ -62,11 +60,6 @@ namespace KentWebApplication
                     Response.Redirect("~/Login.aspx");
                 }
             }
-        }
-
-        protected void hlProfile_Click(object sender, EventArgs e)
-        {
-
         }
 
         protected void hlSignOut_Click(object sender, EventArgs e)
@@ -224,7 +217,6 @@ namespace KentWebApplication
         {
             hlQuotationEstimateList.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE_LIST, new object[] { jobCode, customerCode, engineerCode });
         }
-
 
         #endregion
 
@@ -403,11 +395,6 @@ namespace KentWebApplication
             return statusValue;
         }
         #endregion
-
-        protected void rpSites_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-
-        }
 
     }
 }

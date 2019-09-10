@@ -7,7 +7,7 @@ namespace DAO
     public class LoginDAO
     {
         #region Member
-        DBConnection myConn = null;
+        private readonly DBConnection myConn = null;
         #endregion
 
         #region Constructor

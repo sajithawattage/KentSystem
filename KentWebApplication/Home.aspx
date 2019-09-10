@@ -19,7 +19,7 @@
         </div>
 
         <asp:Panel ID="pnlDetails" runat="server">
-            <asp:Repeater ID="rpSites" runat="server" OnItemDataBound="rpSites_ItemDataBound" OnItemCommand="rpSites_ItemCommand">
+            <asp:Repeater ID="rpSites" runat="server" OnItemDataBound="rpSites_ItemDataBound">
                 <ItemTemplate>
                     <div class="col-lg-4">
                         <div class="box box-success" style="min-height: 200px;">

@@ -1,163 +1,159 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 
 namespace DAO
 {
-	public class HomeDAO
-	{
-		#region Member
+    public class HomeDAO
+    {
+        #region Member
 
-		UserAccountDAO		userDao				= null;
-		DBConnection		myConn				= null;
+        private readonly DBConnection myConn = null;
 
-		#endregion
+        #endregion
 
-		#region Constructor
+        #region Constructor
 
-		public HomeDAO()
-		{
-			if (myConn == null)
-			{
-				myConn							= new DBConnection();
-			}
-		}
+        public HomeDAO()
+        {
+            if (myConn == null)
+            {
+                myConn = new DBConnection();
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Curd Operation
+        #region Curd Operation
 
-		/// <summary>
-		/// Get site details by engineer employee code
-		/// </summary>
-		public DataTable GetSitesByEngineer(string empCode)
-		{
-			DataTable 		dtSites				= null;
-			SqlParameter[]	param				= null;
-			string			qCandidateStatus	= "sp_web_GetSitesByEngineerId";
-			
-			try
-			{
-				param							= new SqlParameter[1];
+        /// <summary>
+        /// Get site details by engineer employee code
+        /// </summary>
+        public DataTable GetSitesByEngineer(string empCode)
+        {
+            DataTable dtSites = null;
+            SqlParameter[] param = null;
+            string qCandidateStatus = "sp_web_GetSitesByEngineerId";
 
-				param[0]						= new SqlParameter("@emp_code", empCode);
-			
-				dtSites							= myConn.ExecuteProcedure(qCandidateStatus, param);
+            try
+            {
+                param = new SqlParameter[1];
 
-				return dtSites;
- 
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+                param[0] = new SqlParameter("@emp_code", empCode);
 
-		public DataTable GetSitesByManager(string empCode)
-		{
-			DataTable 		dtSites				= null;
-			SqlParameter[]	param				= null;
-			string			qCandidateStatus	= "sp_web_GetSitesByManagerId";
-			
-			try
-			{
-				param							= new SqlParameter[1];
+                dtSites = myConn.ExecuteProcedure(qCandidateStatus, param);
 
-				param[0]						= new SqlParameter("@emp_code", empCode);
-			
-				dtSites							= myConn.ExecuteProcedure(qCandidateStatus, param);
+                return dtSites;
 
-				return dtSites;
- 
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		public string GetEmployeeCodeByUserName(string userName)
-		{
-			string			status				= string.Empty;
-			string			qCandidateStatus	= "sp_web_GetEmployeeCodeByUserName";
-			SqlParameter[]	param				= null;
+        public DataTable GetSitesByManager(string empCode)
+        {
+            DataTable dtSites = null;
+            SqlParameter[] param = null;
+            string qCandidateStatus = "sp_web_GetSitesByManagerId";
 
-			try
-			{
-				param							= new SqlParameter[1];
+            try
+            {
+                param = new SqlParameter[1];
 
-				param[0]						= new SqlParameter("@user_name", userName);
-			
-				status							= Convert.ToString(myConn.ExecuteScalarProcedure(qCandidateStatus, param));
+                param[0] = new SqlParameter("@emp_code", empCode);
 
-				return status;
- 
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+                dtSites = myConn.ExecuteProcedure(qCandidateStatus, param);
 
-		/// <summary>
-		/// Get site details by Customer Id and Job Id
-		/// </summary>
-		/// <param name="customerId"></param>
-		/// <param name="jobId"></param>
-		/// <returns></returns>
-		public DataTable GetSiteByCustomerAndJob(int customerId, int jobId, int engineerCode)
-		{
-			DataTable 		dtSites				= null;
-			SqlParameter[]	param				= null;
-			string			qCandidateStatus	= "sp_web_SiteByCustomerAndJob";
-			
-			try
-			{
-				param							= new SqlParameter[3];
+                return dtSites;
 
-				param[0]						= new SqlParameter("@customer_id", customerId);
-				param[1]						= new SqlParameter("@job_id", jobId);
-				param[2]						= new SqlParameter("@engineer_id", engineerCode);
-			
-				dtSites							= myConn.ExecuteProcedure(qCandidateStatus, param);
+            }
+            catch (Exception )
+            {
+                throw ;
+            }
+        }
 
-				return dtSites;
- 
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+        public string GetEmployeeCodeByUserName(string userName)
+        {
+            string status = string.Empty;
+            string qCandidateStatus = "sp_web_GetEmployeeCodeByUserName";
+            SqlParameter[] param = null;
 
-		/// <summary>
-		/// Get user statistics according to the user name.
-		/// </summary>
-		public DataTable GetUserStatistics(string userName)
-		{
-			DataTable 		dtInfomation		= null;
-			SqlParameter[]	param				= null;
-			string			qCandidateStatus	= "sp_web_GetUserDetails";
-			
-			try
-			{ 
-				param							= new SqlParameter[1];
+            try
+            {
+                param = new SqlParameter[1];
 
-				param[0]						= new SqlParameter("@user_name", userName);
-			
-				dtInfomation					= myConn.ExecuteProcedure(qCandidateStatus, param);
+                param[0] = new SqlParameter("@user_name", userName);
 
-				return dtInfomation;
- 
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+                status = Convert.ToString(myConn.ExecuteScalarProcedure(qCandidateStatus, param));
+
+                return status;
+
+            }
+            catch (Exception )
+            {
+                throw ;
+            }
+        }
+
+        /// <summary>
+        /// Get site details by Customer Id and Job Id
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public DataTable GetSiteByCustomerAndJob(int customerId, int jobId, int engineerCode)
+        {
+            DataTable dtSites = null;
+            SqlParameter[] param = null;
+            string qCandidateStatus = "sp_web_SiteByCustomerAndJob";
+
+            try
+            {
+                param = new SqlParameter[3];
+
+                param[0] = new SqlParameter("@customer_id", customerId);
+                param[1] = new SqlParameter("@job_id", jobId);
+                param[2] = new SqlParameter("@engineer_id", engineerCode);
+
+                dtSites = myConn.ExecuteProcedure(qCandidateStatus, param);
+
+                return dtSites;
+
+            }
+            catch (Exception )
+            {
+                throw ;
+            }
+        }
+
+        /// <summary>
+        /// Get user statistics according to the user name.
+        /// </summary>
+        public DataTable GetUserStatistics(string userName)
+        {
+            DataTable dtInfomation = null;
+            SqlParameter[] param = null;
+            string qCandidateStatus = "sp_web_GetUserDetails";
+
+            try
+            {
+                param = new SqlParameter[1];
+
+                param[0] = new SqlParameter("@user_name", userName);
+
+                dtInfomation = myConn.ExecuteProcedure(qCandidateStatus, param);
+
+                return dtInfomation;
+
+            }
+            catch (Exception )
+            {
+                throw ;
+            }
+        }
 
         public int GetSEstimateCount(int customerId, int jobId)
         {
@@ -177,7 +173,7 @@ namespace DAO
                 throw;
             }
         }
-        
+
         #endregion
     }
 

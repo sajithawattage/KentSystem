@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DAO;
+using KentWebApplication.Classes;
+using System;
 
 namespace KentWebApplication
 {
@@ -6,25 +8,18 @@ namespace KentWebApplication
     {
         protected void Unnamed_Click(object sender, EventArgs e)
         {
-            try
+            Email email = new Email()
             {
-                Email email = new Email()
-                {
-                    HostAddress = Config.SmtpHostName,
-                    FromAddress = Config.SmtpUserName,
-                    SmtpPassword = Config.SmtpPassword,
-                    ToAddress = "sajitha.wattage@gmail.com",
-                    Subject = "New  MR Received ",
-                    Body = "Test Email"
-                };
+                HostAddress = Config.SmtpHostName,
+                FromAddress = Config.SmtpUserName,
+                SmtpPassword = Config.SmtpPassword,
+                ToAddress = "sajitha.wattage@gmail.com",
+                Subject = "New  MR Received ",
+                Body = "Test Email"
+            };
 
-                email.SendMail();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
+            email.SendMail();
         }
+
     }
 }

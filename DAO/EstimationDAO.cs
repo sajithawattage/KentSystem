@@ -8,7 +8,7 @@ namespace DAO
 {
     public class EstimationDAO
     {
-        DBConnection myConn = null;
+        private readonly DBConnection myConn = null;
 
         /// <summary>
         /// Constructor

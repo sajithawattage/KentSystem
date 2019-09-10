@@ -8,11 +8,6 @@ namespace KentWebApplication.Classes
 {
 	public class Email
 	{
-		public Email()
-		{
-			
-		}
-
 		public bool SendMail()
 		{
 			bool results = false;
@@ -31,12 +26,11 @@ namespace KentWebApplication.Classes
 				}
 				// Passing values to smtp object
 				smtp.Send(FromAddress, ToAddress, Subject, Body);
-
 				results = true;
 			}
-			catch(Exception ex)
+			catch(Exception)
 			{
-				
+                throw;
 			}
 
 			return results;
