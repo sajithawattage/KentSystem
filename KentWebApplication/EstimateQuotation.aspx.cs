@@ -625,12 +625,6 @@ namespace KentWebApplication
                 SetMessage(2, "Selected item is invalid. Please check the item name or select the item again.");
             }
 
-            //if(ValidateQunatity())
-            //{
-            //	status								= false;
-            //	SetMessage(2, "This Item Exceed Manager’s Estimated Quantity.");
-            //}
-
             return status;
         }
 

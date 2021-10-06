@@ -63,8 +63,6 @@ namespace KentWebApplication.Pages
         private const string COLUMN_ITEM_PENDING_QTY = "PendingQty";
         private const string COLUMN_ITEM_BALANCE_QTY = "BalanceQty";
 
-
-
         #endregion
 
         #region Enum
@@ -96,8 +94,7 @@ namespace KentWebApplication.Pages
         private int engineerCode = -1;
         private int managerCode = -1;
         private int status = -1;
-        private int intTotal = -1;
-
+        
         private Mode formMode = Mode.New;
 
         #endregion
@@ -870,7 +867,7 @@ namespace KentWebApplication.Pages
             }
             // No it's not
         }
-        
+
         protected void btnMsg_OnClick(object sender, EventArgs e)
         {
             var index = hfEditingItemNo.Value;

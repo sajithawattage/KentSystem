@@ -186,7 +186,7 @@
                         onrowcommand="grdClosedExams_RowCommand"
                         onpageindexchanging="grdItems_PageIndexChanging"
                         ondatabound="grdItems_DataBound"
-                        pagesize="10" OnSelectedIndexChanged="grdItems_SelectedIndexChanged" >
+                        pagesize="10" >
                         <columns>
                             <asp:BoundField datafield="ItemIndex" headertext="ID"
                                 itemstyle-Width="5%" />

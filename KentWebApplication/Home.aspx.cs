@@ -53,7 +53,6 @@ namespace KentWebApplication
                     this.GetUserStatistics(userName);
 
                     //disable SubEstimate
-
                 }
                 else
                 {
