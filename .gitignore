@@ -12,6 +12,7 @@ x64/
 x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
-/.vs/KentSolution/v15
+/.vs
 /packages
 *.suo
+*.user
