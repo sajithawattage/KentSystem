@@ -180,7 +180,6 @@ namespace KentWebApplication
 
                     hlQuotationEstimate.NavigateUrl = string.Format(URL_QUOTATION_ESTIMATE, new object[]{ jobCode, customerCode, engineerCode,
                                                                                                     estimateStatus.ToString() });
-
                     GetSubEstimateLinkNameByType(this.ProcessEngineerStatus(engineerState), this.ProcessManagerStatus(managerState), hlQuotationEstimate);
                 }
             }

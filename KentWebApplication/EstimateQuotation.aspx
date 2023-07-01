@@ -258,7 +258,7 @@
                     </asp:TextBox>
                 </div>
                 <div class="form-group col-sm-4">
-                    <asp:TextBox ID="txtItemName" runat="server" class="form-control" placeholder="Item Name" OnTextChanged="txtItemName_TextChanged">
+                    <asp:TextBox ID="txtItemName" runat="server" class="form-control" placeholder="Item Name">
                     </asp:TextBox>
                 </div>
                 <div class="form-group col-sm-1">
@@ -268,7 +268,7 @@
                 </div>
                 <div class="form-group col-sm-1 hidden">
                     <asp:TextBox ID="txtRequestQty" runat="server" class="form-control"
-                        placeholder="Request Qty" OnTextChanged="txtRequestQty_TextChanged">
+                        placeholder="Request Qty">
                     </asp:TextBox>
                 </div>
                 <div class="form-group col-sm-1">

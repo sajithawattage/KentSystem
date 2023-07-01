@@ -157,7 +157,7 @@ namespace DAO
 
         public int GetSEstimateCount(int customerId, int jobId)
         {
-            string qGetSEstimateCount = "sp_GetSEstimateCount";
+            string qGetSEstimateCount = "kentuser.sp_GetSEstimateCount";
             SqlParameter[] param = null;
             try
             {

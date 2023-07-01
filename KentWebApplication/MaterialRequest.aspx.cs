@@ -114,7 +114,6 @@ namespace KentWebApplication
             }
         }
 
-
         private void ResetErrors()
         {
             success_alert.Visible = false;
@@ -673,54 +672,58 @@ namespace KentWebApplication
         /// </summary>
         protected bool Validations()
         {
-            bool status = true;
-
             if (txtItemId.Text.Trim() == string.Empty)
             {
-                status = false;
                 SetMessage(2, "Item ID cannot be empty. Please check the try again.");
+                return false;
             }
 
             if (txtItemName.Text.Trim() == string.Empty)
             {
-                status = false;
                 SetMessage(2, "Item Name cannot be empty. Please check the try again.");
+                return false;
             }
 
             if (txtQty.Text.Trim() == string.Empty)
             {
-                status = false;
                 SetMessage(2, "Item quantity cannot be empty. Please check the try again.");
+                return false;
             }
 
             if (!Validation.IsNumeric(txtQty.Text.Trim()))
             {
-                status = false;
                 SetMessage(2, "Item quantity should be a number. Please check the try again.");
+                return false;
             }
 
             if (!ValidateItem(txtItemId.Text.Trim()))
             {
-                status = false;
                 SetMessage(2, "Selected item is invalid. Please check the item name or select the item again.");
+                return false;
             }
 
             if (hfEstimationId.Value != string.Empty)
             {
                 if (Convert.ToDouble(HiddenFieldlitBalanceQty.Value) <= 0)
                 {
-                    status = false;
                     SetMessage(2, "This Item does not have enough quantity to order.");
+                    return false;
                 }
                 else if (ValidateQunatity())
                 {
-                    status = false;
                     SetMessage(2, "This Item Exceed Manager’s Estimated Quantity.");
+                    return false;
                 }
             }
 
+            if (HiddenFieldlitPendingQty.Value != string.Empty 
+                && (Convert.ToDouble(HiddenFieldlitPendingQty.Value) > 0))
+            {
+                SetMessage(2, "Prior material requisition (MR) exists for this item. Please complete it before reordering.");
+                return false;
+            }
 
-            return status;
+            return true;
         }
 
         /// <summary>
